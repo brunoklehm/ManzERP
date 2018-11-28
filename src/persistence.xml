@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="model">
+	
+	<class name="Chamado" table="chamado">
+        <id name="id" column="id" type="int">
+    	    <generator class="native" />
+        </id>
+        <property name="tipo" 				 column="tipo" 				  type="int"	/>
+        <property name="descricao" 			 column="descricao" 		  type="string" />
+        <property name="nome" 			 	 column="nome" 		  		  type="string" />
+        <property name="status" 			 column="status" 			  type="int" 	/>
+        <property name="usuario_solicitante" column="usuario_solicitante" type="int" 	/>
+        <property name="usuario_atendente" 	 column="usuario_atendente"   type="int" 	/>
+	</class>		
+	<class name="Usuario" table="usuario">
+        <id name="id" column="id" type="int">
+    	    <generator class="native" />
+        </id>
+        <property name="nome"  column="nome" 	type="string" />
+        <property name="cpf"   column="cpf" 	type="string" />
+        <property name="tipo"  column="tipo" 	type="int" 	  />
+        <property name="login" column="login" 	type="string" />
+        <property name="senha" column="senha" 	type="string" />
+	</class>
+</hibernate-mapping>

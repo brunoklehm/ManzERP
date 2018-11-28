@@ -14,6 +14,7 @@ create table chamado(
 id int not null primary key auto_increment,
 tipo int not null,
 descricao varchar(100) not null,
+nome varchar(50) not null,
 status int not null,
 usuario_solicitante int not null,
 usuario_atendente int,

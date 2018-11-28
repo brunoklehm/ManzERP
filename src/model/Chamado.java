@@ -3,6 +3,7 @@ package model;
 public class Chamado {
 
 	private int id;
+	private String nome;
 	private int tipo;
 	private String descricao;
 	private int status;
@@ -19,6 +20,14 @@ public class Chamado {
 		this.status = status;
 		this.usuario_solicitante = usuario_solicitante;
 		this.usuario_atendente = usuario_atendente;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
 	public int getId() {
