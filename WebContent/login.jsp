@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -8,6 +8,28 @@
 <link rel="stylesheet" type="text/css" href="css/bulma.min.css">
 </head>
 <body>
-	<jsp:include page="header.jsp"></jsp:include>
+	<form method="post" action="index.jsp">
+		<div class="container" style="margin-top: 200px">
+			<div class="columns is-mobile is-centered">
+				<div class="column is-one-quarter">
+					<h1 class="title" style="text-align: center">Login</h1>
+					<div class="field">
+						<div class="control">
+							<input class="input is-rounded" type="text" placeholder="Usuário"
+								name="login">
+						</div>
+					</div>
+					<div class="field">
+						<div class="control">
+							<input class="input is-rounded" type="password"
+								placeholder="Senha" name="senha">
+						</div>
+					</div>
+					<button class="button is-link is-rounded" style="width: 100%"
+						type="submit">Entrar</button>
+				</div>
+			</div>
+		</div>
+	</form>
 </body>
 </html>

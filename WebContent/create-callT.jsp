@@ -10,7 +10,7 @@
 	call.setNome(request.getParameter("name"));
 	call.setStatus(1);
 	call.setTipo(Integer.parseInt(request.getParameter("type")));
-	call.setUsuario_solicitante(Integer.parseInt(request.getParameter("r")));
+	call.setUsuario_solicitante(Integer.parseInt(request.getParameter("userId")));
 
 	SessionFactory factory = null;
 	Session sess = null;

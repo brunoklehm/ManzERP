@@ -7,7 +7,8 @@ nome varchar(50) not null,
 cpf char(11) not null,
 tipo int not null,
 login varchar(20) not null,
-senha varchar(20) not null
+senha varchar(20) not null,
+status int not null
 );
 
 create table chamado(

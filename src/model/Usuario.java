@@ -7,17 +7,19 @@ public class Usuario {
 	private int tipo;
 	private String login;
 	private String senha;
+	private int status;
 
 	public Usuario() {
 
 	}
 
-	public Usuario(String nome, String cpf, int tipo, String login, String senha) {
+	public Usuario(String nome, String cpf, int tipo, String login, String senha, int status) {
 		this.nome = nome;
 		this.cpf = cpf;
 		this.tipo = tipo;
 		this.login = login;
 		this.senha = senha;
+		this.status = status;
 	}
 
 	public int getId() {
@@ -66,6 +68,14 @@ public class Usuario {
 
 	public void setSenha(String senha) {
 		this.senha = senha;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
 	}
 
 }

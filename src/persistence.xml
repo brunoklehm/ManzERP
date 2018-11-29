@@ -19,10 +19,11 @@
         <id name="id" column="id" type="int">
     	    <generator class="native" />
         </id>
-        <property name="nome"  column="nome" 	type="string" />
-        <property name="cpf"   column="cpf" 	type="string" />
-        <property name="tipo"  column="tipo" 	type="int" 	  />
-        <property name="login" column="login" 	type="string" />
-        <property name="senha" column="senha" 	type="string" />
+        <property name="nome"  	column="nome" 		type="string" />
+        <property name="cpf"   	column="cpf" 		type="string" />
+        <property name="tipo"  	column="tipo" 		type="int" 	  />
+        <property name="status" column="status" 	type="int" 	  />
+        <property name="login" 	column="login" 		type="string" />
+        <property name="senha" 	column="senha" 		type="string" />
 	</class>
 </hibernate-mapping>
