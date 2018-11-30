@@ -9,9 +9,9 @@
 <link rel="stylesheet" type="text/css" href="css/bulma.min.css">
 </head>
 <body>
-<%
-	ConnectionDB.getSessionFactory();
-%>
+	<%
+		ConnectionDB.getSessionFactory();
+	%>
 	<form method="post" action="index.jsp">
 		<div class="container" style="margin-top: 200px">
 			<div class="columns is-mobile is-centered">
@@ -20,13 +20,13 @@
 					<div class="field">
 						<div class="control">
 							<input class="input is-rounded" type="text" placeholder="Usuário"
-								name="login">
+								name="login" required />
 						</div>
 					</div>
 					<div class="field">
 						<div class="control">
 							<input class="input is-rounded" type="password"
-								placeholder="Senha" name="senha">
+								placeholder="Senha" name="senha" required />
 						</div>
 					</div>
 					<button class="button is-link is-rounded" style="width: 100%"

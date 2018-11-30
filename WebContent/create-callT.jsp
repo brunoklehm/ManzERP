@@ -1,3 +1,4 @@
+<%@page import="model.SingletonCurrentUser"%>
 <%@page import="org.hibernate.SessionFactory"%>
 <%@page import="org.hibernate.Session"%>
 <%@page import="model.ConnectionDB"%>
@@ -10,7 +11,7 @@
 	call.setNome(request.getParameter("name"));
 	call.setStatus(1);
 	call.setTipo(Integer.parseInt(request.getParameter("type")));
-	call.setUsuario_solicitante(Integer.parseInt(request.getParameter("userId")));
+	call.setUsuario_solicitante(SingletonCurrentUser.getCurrentUser().getId());
 
 	SessionFactory factory = null;
 	Session sess = null;
@@ -25,6 +26,6 @@
 
 	if (sess != null) {
 		out.print("Chamado cadastrado com sucesso");
-		response.sendRedirect("index.jsp?userId=" + request.getParameter("userId"));
+		response.sendRedirect("index.jsp");
 	}
 %>

@@ -1,3 +1,4 @@
+<%@page import="model.SingletonCurrentUser"%>
 <%@page import="java.util.List"%>
 <%@page import="model.ConnectionDB"%>
 <%@page import="org.hibernate.Session"%>
@@ -18,44 +19,37 @@
 
 		factory = ConnectionDB.getSessionFactory();
 
-		Usuario user = null;
-		Usuario userR = new Usuario();
-		if ((request.getParameter("login") == null || request.getParameter("senha") == null)
-				&& request.getParameter("userId") == null) {
-			out.print("entrou no if");
-			response.sendRedirect("login2.jsp");
-		} else {
-			if (request.getParameter("login") != null) {
-				userR.setLogin(request.getParameter("login"));
-				userR.setSenha(request.getParameter("senha"));
+		Usuario user = new Usuario();
+		if (request.getParameter("login") != null && request.getParameter("senha") != null) {
+			user.setLogin(request.getParameter("login"));
+			user.setSenha(request.getParameter("senha"));
 
-				sess = factory.openSession();
-				results = sess.createQuery(
-						"from Usuario where login = " + userR.getLogin() + " and senha = " + userR.getSenha())
-						.list();
-			} else if (request.getParameter("userId") != null) {
+			sess = factory.openSession();
+			results = sess.createQuery(
+					"from Usuario where login = " + user.getLogin() + " and senha = " + user.getSenha())
+					.list();
 
-				userR.setId(Integer.parseInt(request.getParameter("userId")));
-				sess = factory.openSession();
-				results = sess.createQuery("from Usuario where id = " + userR.getId()).list();
-			}
 			if (results.isEmpty()) {
 				response.sendRedirect("login.jsp");
 			}
 			user = (Usuario) results.get(0);
-
+			System.out.print(user.getNome());
+			SingletonCurrentUser.setCurrentUser(user);
 			sess.clear();
+		} else if (SingletonCurrentUser.getCurrentUser() != null) {
+			user = SingletonCurrentUser.getCurrentUser();
+		} else {
+			response.sendRedirect("login.jsp");
 		}
 	%>
 	<nav class="navbar is-link" role="navigation"
 		aria-label="dropdown navigation">
 		<div class="navbar-start">
-			<a href="index.jsp?userId=<%=user.getId()%>" class="navbar-item">
-				<img src="img/logo.png" width="50">
+			<a href="index.jsp" class="navbar-item"> <img src="img/logo.png"
+				width="50">
 			</a>
 			<%
-				if (user != null) {
-					if (user.getTipo() == 3) {
+				if (user.getTipo() == 3) {
 			%><a class="navbar-item" href="create-user.jsp"> Criar usuário </a>
 			<%
 				}
@@ -63,8 +57,7 @@
 			<%
 				if (user.getTipo() == 1 || user.getTipo() == 3) {
 			%>
-			<a class="navbar-item"
-				href="create-call.jsp?userId=<%=user.getId()%>"> Criar chamado </a>
+			<a class="navbar-item" href="create-call.jsp"> Criar chamado </a>
 			<%
 				}
 			%>
@@ -87,9 +80,6 @@
 				</div>
 			</div>
 		</div>
-		<%
-			}
-		%>
 	</nav>
 	<div class="container" style="margin-top: 80px">
 		<div class="columns is-mobile is-centered">
