@@ -5,9 +5,9 @@ public class Usuario {
 	private String nome;
 	private String cpf;
 	private int tipo;
+	private int status;
 	private String login;
 	private String senha;
-	private int status;
 
 	public Usuario() {
 

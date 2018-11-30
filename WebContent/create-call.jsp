@@ -9,10 +9,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="css/bulma.min.css">
 </head>
 <body>
-	<jsp:include
-		page="header.jsp?userId=<%=request.getParameter("userId")%>"></jsp:include>
 	<br>
 	<div class="container" style="width: 35%">
 		<center>
@@ -21,7 +20,7 @@
 			</section>
 		</center>
 		<br>
-		<form action="create-callT.jsp" method="POST">
+		<form action="create-callT?userId=<%=request.getParameter("userId") %>.jsp" method="POST">
 			<div class="field">
 				<label class="label">Título</label>
 				<div class="control">
