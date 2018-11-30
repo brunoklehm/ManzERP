@@ -20,7 +20,9 @@
 			</section>
 		</center>
 		<br>
-		<form action="create-callT?userId=<%=request.getParameter("userId") %>.jsp" method="POST">
+		<form
+			action="create-callT.jsp?userId=<%=request.getParameter("userId")%>"
+			method="POST">
 			<div class="field">
 				<label class="label">Título</label>
 				<div class="control">

@@ -50,8 +50,8 @@
 	<nav class="navbar is-link" role="navigation"
 		aria-label="dropdown navigation">
 		<div class="navbar-start">
-			<a href="index.jsp" class="navbar-item"> <img src="img/logo.png"
-				width="50">
+			<a href="index.jsp?userId=<%=user.getId()%>" class="navbar-item">
+				<img src="img/logo.png" width="50">
 			</a>
 			<%
 				if (user != null) {
@@ -64,7 +64,7 @@
 				if (user.getTipo() == 1 || user.getTipo() == 3) {
 			%>
 			<a class="navbar-item"
-				href="create-call?userId=<%=user.getId()%>.jsp"> Criar chamado </a>
+				href="create-call.jsp?userId=<%=user.getId()%>"> Criar chamado </a>
 			<%
 				}
 			%>

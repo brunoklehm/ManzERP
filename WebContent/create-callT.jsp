@@ -25,6 +25,6 @@
 
 	if (sess != null) {
 		out.print("Chamado cadastrado com sucesso");
-		response.sendRedirect("index.jsp");
+		response.sendRedirect("index.jsp?userId=" + request.getParameter("userId"));
 	}
 %>
