@@ -1,3 +1,4 @@
+<%@page import="org.hibernate.Query"%>
 <%@page import="model.SingletonCurrentUser"%>
 <%@page import="java.util.List"%>
 <%@page import="model.ConnectionDB"%>
@@ -19,16 +20,14 @@
 
 		factory = ConnectionDB.getSessionFactory();
 
-		Usuario user = new Usuario();
+		Usuario user = null;
 		if (request.getParameter("login") != null && request.getParameter("senha") != null) {
-			user.setLogin(request.getParameter("login"));
-			user.setSenha(request.getParameter("senha"));
-
 			sess = factory.openSession();
-			results = sess.createQuery(
-					"from Usuario where login = " + user.getLogin() + " and senha = " + user.getSenha())
-					.list();
+			Query query = sess.createQuery("from Usuario where login = :login and senha = :senha");
 
+			query.setParameter("login", request.getParameter("login"));
+			query.setParameter("senha", request.getParameter("senha"));
+			results = query.list();
 			if (results.isEmpty()) {
 				response.sendRedirect("login.jsp");
 			}
@@ -75,8 +74,7 @@
 				</a>
 				<div class="navbar-dropdown">
 					<a class="navbar-link is-primary"> <%=user.getNome()%>
-					</a> <a class="navbar-item"> My account </a> <a class="navbar-item">
-						Logoff </a>
+					</a> <a href="logoff.jsp" class="navbar-item"> Logoff </a>
 				</div>
 			</div>
 		</div>

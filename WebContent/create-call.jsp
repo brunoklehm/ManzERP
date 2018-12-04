@@ -19,7 +19,7 @@
 
 		factory = ConnectionDB.getSessionFactory();
 
-		Usuario user = new Usuario();
+		Usuario user = null;
 		if (SingletonCurrentUser.getCurrentUser() != null) {
 			if (SingletonCurrentUser.getCurrentUser().getTipo() == 1
 					|| SingletonCurrentUser.getCurrentUser().getTipo() == 3) {
@@ -64,8 +64,7 @@
 			</a>
 			<div class="navbar-dropdown">
 				<a class="navbar-link is-primary"> <%=user.getNome()%>
-				</a> <a class="navbar-item"> My account </a> <a class="navbar-item">
-					Logoff </a>
+				</a><a href="logoff.jsp" class="navbar-item"> Logoff </a>
 			</div>
 		</div>
 	</div>
