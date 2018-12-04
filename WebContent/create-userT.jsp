@@ -11,6 +11,7 @@
 	user.setTipo(Integer.parseInt(request.getParameter("type")));
 	user.setLogin(request.getParameter("login"));
 	user.setSenha(request.getParameter("pass"));
+	user.setStatus(1);
 
 	SessionFactory factory = null;
 	Session sess = null;

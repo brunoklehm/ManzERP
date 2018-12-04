@@ -22,8 +22,7 @@
 
 		Usuario user = null;
 		if (SingletonCurrentUser.getCurrentUser() != null) {
-			if (SingletonCurrentUser.getCurrentUser().getTipo() == 1
-					|| SingletonCurrentUser.getCurrentUser().getTipo() == 3) {
+			if (SingletonCurrentUser.getCurrentUser().getTipo() == 3) {
 				user = SingletonCurrentUser.getCurrentUser();
 			} else {
 				response.sendRedirect("login.jsp");

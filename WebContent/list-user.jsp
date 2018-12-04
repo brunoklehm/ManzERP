@@ -1,3 +1,4 @@
+<%@page import="org.hibernate.Transaction"%>
 <%@page import="org.hibernate.HibernateException"%>
 <%@page import="org.hibernate.Session"%>
 <%@page import="org.hibernate.SessionFactory"%>
@@ -19,12 +20,13 @@
 	<%
 		SessionFactory factory = null;
 		Session sess = null;
+		Transaction tx = null;
 
 		factory = ConnectionDB.getSessionFactory();
 
 		Usuario user = null;
 		if (SingletonCurrentUser.getCurrentUser() != null) {
-			if (SingletonCurrentUser.getCurrentUser().getTipo() == 1
+			if (SingletonCurrentUser.getCurrentUser().getTipo() == 2
 					|| SingletonCurrentUser.getCurrentUser().getTipo() == 3) {
 				user = SingletonCurrentUser.getCurrentUser();
 			} else {
@@ -88,23 +90,20 @@
 					<th>Login</th>
 					<th>Senha</th>
 					<th>Tipo</th>
+					<th>Status</th>
 					<th style="text-align: center">Alterar</th>
 					<th style="text-align: center">Excluir</th>
 				</tr>
 			</thead>
-
 			<%
 				factory = ConnectionDB.getSessionFactory();
 				sess = factory.getCurrentSession();
 				try {
 					tx = sess.beginTransaction();
-
 					List usuarios = sess.createQuery("from Usuario").list();
-
 					for (Iterator iterator = usuarios.iterator(); iterator.hasNext();) {
 						Usuario us = (Usuario) iterator.next();
 			%>
-
 			<tbody>
 				<tr>
 					<td><%=us.getId()%></td>
@@ -112,32 +111,60 @@
 					<td><%=us.getCpf()%></td>
 					<td><%=us.getLogin()%></td>
 					<td><%=us.getSenha()%></td>
-					<td><%=us.getTipo()%></td>
+					<td>
+						<%
+							if (us.getTipo() == 1) {
+						%>Colaborador<%
+							} else if (us.getTipo() == 2) {
+						%>Suporte<%
+							} else if (us.getTipo() == 3) {
+						%>Administrador <%
+							}
+						%>
+					</td>
+					<td>
+						<%
+							if (us.getStatus() == 1) {
+						%>Ativo<%
+							} else {
+						%>Inativo<%
+							}
+						%>
+					</td>
 					<td><a href="edit-user.jsp" title="Alterar"><center>
-								<img src="lapis.png" style="width: 12px"></a><img src=""></td>
+								<img src="img/lapis.png" style="width: 12px"></a></td>
 					<td><a href="exclude-user.jsp" title="Excluir"><center>
-								<img src="lixeira.png" style="width: 13px"></a></td>
+								<img src="img/lixeira.png" style="width: 12px"></a></td>
 				</tr>
-			<tbody>
+				<tbody>
 				<%
 					}
-
 						tx.commit();
-
 					} catch (HibernateException ex) {
 						if (tx != null) {
 							tx.rollback();
 							ex.printStackTrace();
 						}
-					}
-
-					finally {
+					} finally {
 						sess.close();
 					}
 				%>
 			
+			
+			
+			
+			
+			
+			
+			
+			
+		
+			
+		
+			
+		
+			
 		</table>
 	</div>
-
 </body>
 </html>
