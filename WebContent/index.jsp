@@ -30,11 +30,12 @@
 			results = query.list();
 			if (results.isEmpty()) {
 				response.sendRedirect("login.jsp");
+			} else {
+				user = (Usuario) results.get(0);
+				System.out.print(user.getNome());
+				SingletonCurrentUser.setCurrentUser(user);
+				sess.clear();
 			}
-			user = (Usuario) results.get(0);
-			System.out.print(user.getNome());
-			SingletonCurrentUser.setCurrentUser(user);
-			sess.clear();
 		} else if (SingletonCurrentUser.getCurrentUser() != null) {
 			user = SingletonCurrentUser.getCurrentUser();
 		} else {
@@ -48,7 +49,8 @@
 				width="50">
 			</a>
 			<%
-				if (user.getTipo() == 3) {
+				if (user != null) {
+					if (user.getTipo() == 3) {
 			%><a class="navbar-item" href="create-user.jsp"> Criar usuário </a>
 			<%
 				}
@@ -60,10 +62,11 @@
 			<%
 				}
 			%>
+			<a class="navbar-item" href="list-call.jsp"> Chamados </a>
 			<%
 				if (user.getTipo() == 2 || user.getTipo() == 3) {
-			%><a class="navbar-item" href="list-call.jsp"> Chamados </a> <a
-				class="navbar-item" href="user-list.jsp"> Usuários </a>
+			%>
+			<a class="navbar-item" href="list-user.jsp"> Usuários </a>
 			<%
 				}
 			%>
@@ -73,7 +76,9 @@
 				<a class="navbar-link"> <img src="img/user.png">
 				</a>
 				<div class="navbar-dropdown">
-					<a class="navbar-link is-primary"> <%=user.getNome()%>
+					<a class="navbar-item is-primary"> <%=user.getNome()%> <%
+ 	}
+ %>
 					</a> <a href="logoff.jsp" class="navbar-item"> Logoff </a>
 				</div>
 			</div>

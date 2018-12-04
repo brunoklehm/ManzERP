@@ -1,15 +1,18 @@
-<%@page import="model.SingletonCurrentUser"%>
-<%@page import="model.ConnectionDB"%>
+<%@page import="org.hibernate.HibernateException"%>
 <%@page import="org.hibernate.Session"%>
 <%@page import="org.hibernate.SessionFactory"%>
+<%@page import="model.SingletonCurrentUser"%>
 <%@page import="model.Usuario"%>
+<%@page import="java.util.Iterator"%>
+<%@page import="java.util.List"%>
+<%@page import="model.ConnectionDB"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Criar Chamado - ManzERP</title>
+<title>Listar chamados - ManzERP</title>
 <link rel="stylesheet" type="text/css" href="css/bulma.min.css">
 </head>
 <body>
@@ -74,51 +77,67 @@
 	</div>
 	</nav>
 	<br>
-	<div class="container" style="width: 35%">
-		<center>
-			<section class="hero">
-			<h1 class="title">Criar chamado</h1>
-			</section>
-		</center>
-		<br>
-		<form action="create-callT.jsp" method="POST">
-			<div class="field">
-				<label class="label">Título</label>
-				<div class="control">
-					<input name="name" class="input" type="text"
-						placeholder="Título do chamado">
-				</div>
-			</div>
-			<div class="field">
-				<label class="label">Tipo</label>
-				<div class="control">
-					<div class="select">
-						<select name="type">
-							<option value="1">Baixo</option>
-							<option value="2">Moderado</option>
-							<option value="3">Crítico</option>
-						</select>
-					</div>
-				</div>
-			</div>
-			<div class="field">
-				<label class="label">Descrição</label>
-				<div class="control">
-					<textarea class="textarea" style="height: 225px"
-						placeholder="Descrição do chamado..." name="description"></textarea>
-				</div>
-			</div>
-			<br>
-			<div class="field-body">
-				<div class="field">
-					<div class="control">
-						<center>
-							<button class="button is-link" style="width: 45%" type="submit">Enviar</button>
-						</center>
-					</div>
-				</div>
-			</div>
-		</form>
+	<div class="container">
+		<table
+			class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Nome</th>
+					<th>CPF</th>
+					<th>Login</th>
+					<th>Senha</th>
+					<th>Tipo</th>
+					<th style="text-align: center">Alterar</th>
+					<th style="text-align: center">Excluir</th>
+				</tr>
+			</thead>
+
+			<%
+				factory = ConnectionDB.getSessionFactory();
+				sess = factory.getCurrentSession();
+				try {
+					tx = sess.beginTransaction();
+
+					List usuarios = sess.createQuery("from Usuario").list();
+
+					for (Iterator iterator = usuarios.iterator(); iterator.hasNext();) {
+						Usuario us = (Usuario) iterator.next();
+			%>
+
+			<tbody>
+				<tr>
+					<td><%=us.getId()%></td>
+					<td><%=us.getNome()%></td>
+					<td><%=us.getCpf()%></td>
+					<td><%=us.getLogin()%></td>
+					<td><%=us.getSenha()%></td>
+					<td><%=us.getTipo()%></td>
+					<td><a href="edit-user.jsp" title="Alterar"><center>
+								<img src="lapis.png" style="width: 12px"></a><img src=""></td>
+					<td><a href="exclude-user.jsp" title="Excluir"><center>
+								<img src="lixeira.png" style="width: 13px"></a></td>
+				</tr>
+			<tbody>
+				<%
+					}
+
+						tx.commit();
+
+					} catch (HibernateException ex) {
+						if (tx != null) {
+							tx.rollback();
+							ex.printStackTrace();
+						}
+					}
+
+					finally {
+						sess.close();
+					}
+				%>
+			
+		</table>
 	</div>
+
 </body>
 </html>

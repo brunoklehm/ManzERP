@@ -21,5 +21,5 @@ status int not null,
 usuario_solicitante int not null,
 usuario_atendente int,
 foreign key (usuario_solicitante) references usuario(id) on update cascade,
-foreign key (usuario_atendente) references usuario(id) on update cascade,
+foreign key (usuario_atendente) references usuario(id) on update cascade
 );
