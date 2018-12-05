@@ -1,3 +1,4 @@
+<%@page import="model.SingletonCurrentUser"%>
 <%@page import="model.ConnectionDB"%>
 <%@page import="org.hibernate.Session"%>
 <%@page import="org.hibernate.SessionFactory"%>
@@ -5,27 +6,31 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%
-	Usuario user = new Usuario();
-	user.setCpf(request.getParameter("cpf"));
-	user.setNome(request.getParameter("name"));
-	user.setTipo(Integer.parseInt(request.getParameter("type")));
-	user.setLogin(request.getParameter("login"));
-	user.setSenha(request.getParameter("pass"));
-	user.setStatus(1);
+	if (SingletonCurrentUser.getCurrentUser() != null) {
+		Usuario user = new Usuario();
+		user.setCpf(request.getParameter("cpf"));
+		user.setNome(request.getParameter("name"));
+		user.setTipo(Integer.parseInt(request.getParameter("type")));
+		user.setLogin(request.getParameter("login"));
+		user.setSenha(request.getParameter("pass"));
+		user.setStatus(1);
 
-	SessionFactory factory = null;
-	Session sess = null;
+		SessionFactory factory = null;
+		Session sess = null;
 
-	factory = ConnectionDB.getSessionFactory();
+		factory = ConnectionDB.getSessionFactory();
 
-	sess = factory.openSession();
+		sess = factory.openSession();
 
-	sess.getTransaction().begin();
-	sess.save(user);
-	sess.getTransaction().commit();
+		sess.getTransaction().begin();
+		sess.save(user);
+		sess.getTransaction().commit();
 
-	if (sess != null) {
-		out.print("Usuário cadastrado com sucesso");
-		response.sendRedirect("index.jsp");
+		if (sess != null) {
+			out.print("Usuário cadastrado com sucesso");
+			response.sendRedirect("index.jsp");
+		}
+	} else {
+		response.sendRedirect("login.jsp");
 	}
 %>

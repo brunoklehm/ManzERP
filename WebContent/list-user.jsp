@@ -64,15 +64,20 @@
 		<%
 			}
 		%>
+		<%
+			if (user.getTipo() == 2) {
+		%>
+		<a class="navbar-item" href="my-calls.jsp"> Meus Chamados </a>
+		<%
+			}
+		%>
 	</div>
 	<div class="navbar-end">
 		<div class="navbar-item has-dropdown is-hoverable">
 			<a class="navbar-link"> <img src="img/user.png">
 			</a>
 			<div class="navbar-dropdown">
-				<a class="navbar-item is-primary"> <%=user.getNome()%> <%
- 	}
- %>
+				<a class="navbar-item is-primary"> <%=user.getNome()%>
 				</a><a href="logoff.jsp" class="navbar-item"> Logoff </a>
 			</div>
 		</div>
@@ -103,12 +108,12 @@
 			</thead>
 			<%
 				factory = ConnectionDB.getSessionFactory();
-				sess = factory.getCurrentSession();
-				try {
-					tx = sess.beginTransaction();
-					List usuarios = sess.createQuery("from Usuario").list();
-					for (Iterator iterator = usuarios.iterator(); iterator.hasNext();) {
-						Usuario us = (Usuario) iterator.next();
+					sess = factory.getCurrentSession();
+					try {
+						tx = sess.beginTransaction();
+						List usuarios = sess.createQuery("from Usuario").list();
+						for (Iterator iterator = usuarios.iterator(); iterator.hasNext();) {
+							Usuario us = (Usuario) iterator.next();
 			%>
 			<tbody>
 				<tr>
@@ -145,18 +150,21 @@
 			<tbody>
 				<%
 					}
-						tx.commit();
-					} catch (HibernateException ex) {
-						if (tx != null) {
-							tx.rollback();
-							ex.printStackTrace();
+							tx.commit();
+						} catch (HibernateException ex) {
+							if (tx != null) {
+								tx.rollback();
+								ex.printStackTrace();
+							}
+						} finally {
+							sess.close();
 						}
-					} finally {
-						sess.close();
-					}
 				%>
 			
 		</table>
 	</div>
+	<%
+		}
+	%>
 </body>
 </html>

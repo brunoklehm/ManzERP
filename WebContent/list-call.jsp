@@ -1,3 +1,4 @@
+<%@page import="org.hibernate.Hibernate"%>
 <%@page import="org.hibernate.HibernateException"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.Iterator"%>
@@ -60,15 +61,20 @@
 		<%
 			}
 		%>
+		<%
+			if (user.getTipo() == 2) {
+		%>
+		<a class="navbar-item" href="my-calls.jsp"> Meus Chamados </a>
+		<%
+			}
+		%>
 	</div>
 	<div class="navbar-end">
 		<div class="navbar-item has-dropdown is-hoverable">
 			<a class="navbar-link"> <img src="img/user.png">
 			</a>
 			<div class="navbar-dropdown">
-				<a class="navbar-item is-primary"> <%=user.getNome()%> <%
- 	}
- %>
+				<a class="navbar-item is-primary"> <%=user.getNome()%>
 				</a><a href="logoff.jsp" class="navbar-item"> Logoff </a>
 			</div>
 		</div>
@@ -94,6 +100,13 @@
 					<%
 						}
 					%>
+					<%
+						if (SingletonCurrentUser.getCurrentUser().getTipo() != 2) {
+					%>
+					<th>Atendente</th>
+					<%
+						}
+					%>
 					<th>Título</th>
 					<th>Descrição</th>
 					<th>Tipo</th>
@@ -103,28 +116,33 @@
 
 			<%
 				factory = ConnectionDB.getSessionFactory();
-				sess = factory.getCurrentSession();
-				try {
-					tx = sess.beginTransaction();
-					List chamados = null;
-					if (SingletonCurrentUser.getCurrentUser().getTipo() == 1) {
-						chamados = sess.createQuery(
-								"from Chamado where usuario_solicitante = " + SingletonCurrentUser.getCurrentUser().getId())
-								.list();
-					} else if (SingletonCurrentUser.getCurrentUser().getTipo() == 2) {
-						chamados = sess.createQuery("from Chamado where status = 1").list();
-					} else {
-						chamados = sess.createQuery("from Chamado").list();
-					}
+					sess = factory.getCurrentSession();
+					try {
+						tx = sess.beginTransaction();
+						List chamados = null;
+						if (SingletonCurrentUser.getCurrentUser().getTipo() == 1) {
+							chamados = sess.createQuery("from Chamado where usuario_solicitante = "
+									+ SingletonCurrentUser.getCurrentUser().getId()).list();
+						} else if (SingletonCurrentUser.getCurrentUser().getTipo() == 2) {
+							chamados = sess.createQuery("from Chamado where status = 1").list();
+						} else {
+							chamados = sess.createQuery("from Chamado").list();
+						}
 
-					for (Iterator iterator = chamados.iterator(); iterator.hasNext();) {
-						Chamado ch = (Chamado) iterator.next();
+						for (Iterator iterator = chamados.iterator(); iterator.hasNext();) {
+							Chamado ch = (Chamado) iterator.next();
 
-						sess.clear();
+							sess.clear();
 
-						Usuario solicitante = (Usuario) sess.load(Usuario.class, ch.getUsuario_solicitante());
+							Usuario solicitante = (Usuario) sess.load(Usuario.class, ch.getUsuario_solicitante());
+							Hibernate.initialize(solicitante);
+							sess.clear();
+							Usuario atendente = null;
+							if (ch.getUsuario_atendente() != 0) {
+								atendente = (Usuario) sess.load(Usuario.class, ch.getUsuario_atendente());
+								Hibernate.initialize(atendente);
+							}
 			%>
-
 			<tbody>
 				<tr>
 					<td><%=ch.getId()%></td>
@@ -132,6 +150,16 @@
 						if (SingletonCurrentUser.getCurrentUser().getTipo() != 1) {
 					%>
 					<td><%=solicitante.getLogin()%></td>
+					<%
+						}
+					%>
+					<%
+						if (SingletonCurrentUser.getCurrentUser().getTipo() != 2 && atendente != null) {
+					%>
+					<td><%=atendente.getLogin()%></td>
+					<%
+						} else if(SingletonCurrentUser.getCurrentUser().getTipo() == 2){
+					%><td>Fila de espera</td>
 					<%
 						}
 					%>
@@ -161,23 +189,21 @@
 			<tbody>
 				<%
 					}
-
-						tx.commit();
-
-					} catch (HibernateException ex) {
-						if (tx != null) {
-							tx.rollback();
-							ex.printStackTrace();
+							tx.commit();
+						} catch (HibernateException ex) {
+							if (tx != null) {
+								tx.rollback();
+								ex.printStackTrace();
+							}
+						} finally {
+							sess.close();
 						}
-					}
-
-					finally {
-						sess.close();
-					}
 				%>
 			
 		</table>
 	</div>
-
+	<%
+		}
+	%>
 </body>
 </html>

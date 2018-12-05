@@ -1,6 +1,8 @@
-<%@page import="model.Usuario"%>
 <%@page import="model.SingletonCurrentUser"%>
+<%@page import="org.hibernate.Query"%>
+<%@page import="model.Usuario"%>
 <%@page import="model.ConnectionDB"%>
+<%@page import="java.util.List"%>
 <%@page import="org.hibernate.Session"%>
 <%@page import="org.hibernate.SessionFactory"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -9,10 +11,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Criar usuário - ManzERP</title>
+<title>Meus Chamados - ManzERP</title>
 <link rel="stylesheet" type="text/css" href="css/bulma.min.css">
 </head>
-<body>
 <body>
 	<%
 		SessionFactory factory = null;
@@ -22,7 +23,7 @@
 
 		Usuario user = null;
 		if (SingletonCurrentUser.getCurrentUser() != null) {
-			if (SingletonCurrentUser.getCurrentUser().getTipo() == 3) {
+			if (SingletonCurrentUser.getCurrentUser().getTipo() == 2) {
 				user = SingletonCurrentUser.getCurrentUser();
 			} else {
 				response.sendRedirect("index.jsp");
@@ -81,63 +82,5 @@
 	</div>
 	</nav>
 	<br>
-	<div class="container" style="width: 35%">
-		<center>
-			<section class="hero">
-			<h1 class="title">Criar usuário</h1>
-			</section>
-		</center>
-		<br>
-		<form action="create-userT.jsp" method="POST">
-			<div class="field">
-				<label class="label">Nome</label>
-				<div class="control">
-					<input name="name" class="input" type="text" placeholder="Seu nome">
-				</div>
-			</div>
-			<div class="field">
-				<label class="label">CPF</label>
-				<div class="control">
-					<input name="cpf" class="input" type="text" placeholder="Seu CPF">
-				</div>
-			</div>
-			<div class="field">
-				<label class="label">Tipo</label>
-				<div class="control">
-					<div class="select">
-						<select name="type">
-							<option value="1">Colaborador</option>
-							<option value="2">Suporte</option>
-							<option value="3">Administrador</option>
-						</select>
-					</div>
-				</div>
-			</div>
-			<div class="field">
-				<label class="label">Login</label>
-				<div class="control">
-					<input name="login" class="input" type="text"
-						placeholder="Seu login">
-				</div>
-			</div>
-			<div class="field">
-				<label class="label">Senha</label>
-				<div class="control">
-					<input name="pass" class="input" type="password"
-						placeholder="Sua senha">
-				</div>
-			</div>
-			<br>
-			<div class="field-body">
-				<div class="field">
-					<div class="control">
-						<center>
-							<button type="submit" class="button is-link" style="width: 45%">Cadastrar</button>
-						</center>
-					</div>
-				</div>
-			</div>
-		</form>
-	</div>
 </body>
 </html>

@@ -59,6 +59,13 @@
 		<%
 			}
 		%>
+		<%
+			if (user.getTipo() == 2) {
+		%>
+		<a class="navbar-item" href="my-calls.jsp"> Meus Chamados </a>
+		<%
+			}
+		%>
 	</div>
 	<div class="navbar-end">
 		<div class="navbar-item has-dropdown is-hoverable">
