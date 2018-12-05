@@ -25,7 +25,7 @@
 			if (SingletonCurrentUser.getCurrentUser().getTipo() == 3) {
 				user = SingletonCurrentUser.getCurrentUser();
 			} else {
-				response.sendRedirect("login.jsp");
+				response.sendRedirect("index.jsp");
 			}
 		} else {
 			response.sendRedirect("login.jsp");

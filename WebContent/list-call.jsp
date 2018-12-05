@@ -1,12 +1,13 @@
-<%@page import="org.hibernate.Transaction"%>
 <%@page import="org.hibernate.HibernateException"%>
+<%@page import="java.util.List"%>
+<%@page import="java.util.Iterator"%>
+<%@page import="model.Chamado"%>
+<%@page import="model.Usuario"%>
+<%@page import="model.SingletonCurrentUser"%>
+<%@page import="model.ConnectionDB"%>
+<%@page import="org.hibernate.Transaction"%>
 <%@page import="org.hibernate.Session"%>
 <%@page import="org.hibernate.SessionFactory"%>
-<%@page import="model.SingletonCurrentUser"%>
-<%@page import="model.Usuario"%>
-<%@page import="java.util.Iterator"%>
-<%@page import="java.util.List"%>
-<%@page import="model.ConnectionDB"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -26,12 +27,7 @@
 
 		Usuario user = null;
 		if (SingletonCurrentUser.getCurrentUser() != null) {
-			if (SingletonCurrentUser.getCurrentUser().getTipo() == 2
-					|| SingletonCurrentUser.getCurrentUser().getTipo() == 3) {
-				user = SingletonCurrentUser.getCurrentUser();
-			} else {
-				response.sendRedirect("index.jsp");
-			}
+			user = SingletonCurrentUser.getCurrentUser();
 		} else {
 			response.sendRedirect("login.jsp");
 		}
@@ -82,7 +78,7 @@
 	<div class="container">
 		<center>
 			<section class="hero">
-			<h1 class="title">Usuários</h1>
+			<h1 class="title">Chamados</h1>
 			</section>
 		</center>
 		<br>
@@ -91,72 +87,97 @@
 			<thead>
 				<tr>
 					<th>ID</th>
-					<th>Nome</th>
-					<th>CPF</th>
-					<th>Login</th>
-					<th>Senha</th>
+					<%
+						if (SingletonCurrentUser.getCurrentUser().getTipo() != 1) {
+					%>
+					<th>Solicitante</th>
+					<%
+						}
+					%>
+					<th>Título</th>
+					<th>Descrição</th>
 					<th>Tipo</th>
 					<th>Status</th>
-					<th style="text-align: center">Alterar</th>
-					<th style="text-align: center">Excluir</th>
 				</tr>
 			</thead>
+
 			<%
 				factory = ConnectionDB.getSessionFactory();
 				sess = factory.getCurrentSession();
 				try {
 					tx = sess.beginTransaction();
-					List usuarios = sess.createQuery("from Usuario").list();
-					for (Iterator iterator = usuarios.iterator(); iterator.hasNext();) {
-						Usuario us = (Usuario) iterator.next();
+					List chamados = null;
+					if (SingletonCurrentUser.getCurrentUser().getTipo() == 1) {
+						chamados = sess.createQuery(
+								"from Chamado where usuario_solicitante = " + SingletonCurrentUser.getCurrentUser().getId())
+								.list();
+					} else if (SingletonCurrentUser.getCurrentUser().getTipo() == 2) {
+						chamados = sess.createQuery("from Chamado where status = 1").list();
+					} else {
+						chamados = sess.createQuery("from Chamado").list();
+					}
+
+					for (Iterator iterator = chamados.iterator(); iterator.hasNext();) {
+						Chamado ch = (Chamado) iterator.next();
+
+						sess.clear();
+
+						Usuario solicitante = (Usuario) sess.load(Usuario.class, ch.getUsuario_solicitante());
 			%>
+
 			<tbody>
 				<tr>
-					<td><%=us.getId()%></td>
-					<td><%=us.getNome()%></td>
-					<td><%=us.getCpf()%></td>
-					<td><%=us.getLogin()%></td>
-					<td><%=us.getSenha()%></td>
+					<td><%=ch.getId()%></td>
+					<%
+						if (SingletonCurrentUser.getCurrentUser().getTipo() != 1) {
+					%>
+					<td><%=solicitante.getLogin()%></td>
+					<%
+						}
+					%>
+					<td><%=ch.getNome()%></td>
+					<td><%=ch.getDescricao()%></td>
 					<td>
 						<%
-							if (us.getTipo() == 1) {
-						%>Colaborador<%
-							} else if (us.getTipo() == 2) {
-						%>Suporte<%
-							} else if (us.getTipo() == 3) {
-						%>Administrador <%
+							if (ch.getTipo() == 1) {
+						%>Baixo<%
+							} else if (ch.getTipo() == 2) {
+						%>Moderado<%
+							} else if (ch.getTipo() == 3) {
+						%>Crítico <%
 							}
 						%>
 					</td>
 					<td>
 						<%
-							if (us.getStatus() == 1) {
+							if (ch.getStatus() == 1) {
 						%>Ativo<%
 							} else {
 						%>Inativo<%
 							}
 						%>
 					</td>
-					<td><a href="edit-user.jsp" title="Alterar"><center>
-								<img src="img/lapis.png" style="width: 12px"></a></td>
-					<td><a href="exclude-user.jsp" title="Excluir"><center>
-								<img src="img/lixeira.png" style="width: 12px"></a></td>
 				</tr>
 			<tbody>
 				<%
 					}
+
 						tx.commit();
+
 					} catch (HibernateException ex) {
 						if (tx != null) {
 							tx.rollback();
 							ex.printStackTrace();
 						}
-					} finally {
+					}
+
+					finally {
 						sess.close();
 					}
 				%>
 			
 		</table>
 	</div>
+
 </body>
 </html>

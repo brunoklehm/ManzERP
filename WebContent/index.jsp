@@ -23,7 +23,7 @@
 		Usuario user = null;
 		if (request.getParameter("login") != null && request.getParameter("senha") != null) {
 			sess = factory.openSession();
-			Query query = sess.createQuery("from Usuario where login = :login and senha = :senha");
+			Query query = sess.createQuery("from Usuario where login = :login and senha = :senha and status = 1");
 
 			query.setParameter("login", request.getParameter("login"));
 			query.setParameter("senha", request.getParameter("senha"));
