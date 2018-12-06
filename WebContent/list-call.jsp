@@ -26,10 +26,7 @@
 
 		factory = ConnectionDB.getSessionFactory();
 
-		Usuario user = null;
-		if (SingletonCurrentUser.getCurrentUser() != null) {
-			user = SingletonCurrentUser.getCurrentUser();
-		} else {
+		if (SingletonCurrentUser.getCurrentUser() == null) {
 			response.sendRedirect("login.jsp");
 		}
 	%>
@@ -40,14 +37,15 @@
 			width="50">
 		</a>
 		<%
-			if (user != null) {
-				if (user.getTipo() == 3) {
+			if (SingletonCurrentUser.getCurrentUser() != null) {
+				if (SingletonCurrentUser.getCurrentUser().getTipo() == 3) {
 		%><a class="navbar-item" href="create-user.jsp"> Criar usuário </a>
 		<%
 			}
 		%>
 		<%
-			if (user.getTipo() == 1 || user.getTipo() == 3) {
+			if (SingletonCurrentUser.getCurrentUser().getTipo() == 1
+						|| SingletonCurrentUser.getCurrentUser().getTipo() == 3) {
 		%>
 		<a class="navbar-item" href="create-call.jsp"> Criar chamado </a>
 		<%
@@ -55,14 +53,15 @@
 		%>
 		<a class="navbar-item" href="list-call.jsp"> Chamados </a>
 		<%
-			if (user.getTipo() == 2 || user.getTipo() == 3) {
+			if (SingletonCurrentUser.getCurrentUser().getTipo() == 2
+						|| SingletonCurrentUser.getCurrentUser().getTipo() == 3) {
 		%>
 		<a class="navbar-item" href="list-user.jsp"> Usuários </a>
 		<%
 			}
 		%>
 		<%
-			if (user.getTipo() == 2) {
+			if (SingletonCurrentUser.getCurrentUser().getTipo() == 2) {
 		%>
 		<a class="navbar-item" href="my-calls.jsp"> Meus Chamados </a>
 		<%
@@ -74,7 +73,7 @@
 			<a class="navbar-link"> <img src="img/user.png">
 			</a>
 			<div class="navbar-dropdown">
-				<a class="navbar-item is-primary"> <%=user.getNome()%>
+				<a class="navbar-item is-primary"> <%=SingletonCurrentUser.getCurrentUser().getNome()%>
 				</a><a href="logoff.jsp" class="navbar-item"> Logoff </a>
 			</div>
 		</div>
@@ -158,7 +157,7 @@
 					%>
 					<td><%=atendente.getLogin()%></td>
 					<%
-						} else if(SingletonCurrentUser.getCurrentUser().getTipo() == 2){
+						} else if (SingletonCurrentUser.getCurrentUser().getTipo() != 2) {
 					%><td>Fila de espera</td>
 					<%
 						}

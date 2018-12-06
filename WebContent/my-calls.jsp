@@ -73,9 +73,10 @@
 			<a class="navbar-link"> <img src="img/user.png">
 			</a>
 			<div class="navbar-dropdown">
-				<a class="navbar-item is-primary"> <%=user.getNome()%> <%
- 	}
- %>
+				<a class="navbar-item is-primary"> <%=SingletonCurrentUser.getCurrentUser().getNome()%>
+					<%
+						}
+					%>
 				</a><a href="logoff.jsp" class="navbar-item"> Logoff </a>
 			</div>
 		</div>

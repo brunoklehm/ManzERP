@@ -13,7 +13,6 @@
 <link rel="stylesheet" type="text/css" href="css/bulma.min.css">
 </head>
 <body>
-<body>
 	<%
 		SessionFactory factory = null;
 		Session sess = null;
