@@ -10,7 +10,7 @@
 <html>
 <head>
 <title>Início - ManzERP</title>
-<link rel="shortcut icon" href="/img/favicon.ico">
+<link rel="icon" href="/img/favicon.png">
 <link rel="stylesheet" type="text/css" href="css/bulma.min.css">
 </head>
 <body>
