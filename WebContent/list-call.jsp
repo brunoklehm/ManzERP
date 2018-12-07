@@ -110,6 +110,13 @@
 					<th>Descrição</th>
 					<th>Tipo</th>
 					<th>Status</th>
+					<%
+						if (SingletonCurrentUser.getCurrentUser().getTipo() == 2) {
+					%>
+					<th style="text-align: center">Atender</th>
+					<%
+						}
+					%>
 				</tr>
 			</thead>
 
@@ -121,11 +128,14 @@
 						List chamados = null;
 						if (SingletonCurrentUser.getCurrentUser().getTipo() == 1) {
 							chamados = sess.createQuery("from Chamado where usuario_solicitante = "
-									+ SingletonCurrentUser.getCurrentUser().getId()).list();
+									+ SingletonCurrentUser.getCurrentUser().getId() + " order by status desc, id desc")
+									.list();
 						} else if (SingletonCurrentUser.getCurrentUser().getTipo() == 2) {
-							chamados = sess.createQuery("from Chamado where status = 1").list();
+							chamados = sess.createQuery(
+									"from Chamado where status = 1 order by usuario_atendente asc, tipo desc, id desc")
+									.list();
 						} else {
-							chamados = sess.createQuery("from Chamado").list();
+							chamados = sess.createQuery("from Chamado order by id desc").list();
 						}
 
 						for (Iterator iterator = chamados.iterator(); iterator.hasNext();) {
@@ -180,10 +190,28 @@
 							if (ch.getStatus() == 1) {
 						%>Ativo<%
 							} else {
-						%>Inativo<%
+						%>Resolvido<%
 							}
 						%>
 					</td>
+					<%
+						if (SingletonCurrentUser.getCurrentUser().getTipo() == 2) {
+					%>
+					<td>
+						<%
+							if (atendente == null) {
+						%><center>
+							<a class="button is-link"
+								href="receive-call.jsp?id=<%=ch.getId()%>" style="height: 25px">Atender</a>
+						</center> <%
+ 	} else {
+ %> Ja foi atendido <%
+ 	}
+ %>
+					</td>
+					<%
+						}
+					%>
 				</tr>
 			<tbody>
 				<%

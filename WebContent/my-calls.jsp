@@ -1,3 +1,8 @@
+<%@page import="org.hibernate.Transaction"%>
+<%@page import="org.hibernate.HibernateException"%>
+<%@page import="java.util.Iterator"%>
+<%@page import="model.Chamado"%>
+<%@page import="org.hibernate.Hibernate"%>
 <%@page import="model.SingletonCurrentUser"%>
 <%@page import="org.hibernate.Query"%>
 <%@page import="model.Usuario"%>
@@ -18,6 +23,7 @@
 	<%
 		SessionFactory factory = null;
 		Session sess = null;
+		Transaction tx = null;
 
 		factory = ConnectionDB.getSessionFactory();
 
@@ -83,5 +89,99 @@
 	</div>
 	</nav>
 	<br>
+	<div class="container">
+		<center>
+			<section class="hero">
+			<h1 class="title">Meus chamados</h1>
+			</section>
+		</center>
+		<br>
+		<table
+			class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Solicitante</th>
+					<th>Título</th>
+					<th>Descrição</th>
+					<th>Tipo</th>
+					<th>Status</th>
+					<th>Resolver</th>
+				</tr>
+			</thead>
+			<%
+				factory = ConnectionDB.getSessionFactory();
+				sess = factory.getCurrentSession();
+				try {
+					tx = sess.beginTransaction();
+					List chamados = null;
+					chamados = sess.createQuery("from Chamado where usuario_atendente = "
+							+ SingletonCurrentUser.getCurrentUser().getId() + " order by status desc, tipo desc, id asc")
+							.list();
+
+					for (Iterator iterator = chamados.iterator(); iterator.hasNext();) {
+						Chamado ch = (Chamado) iterator.next();
+
+						sess.clear();
+
+						Usuario solicitante = (Usuario) sess.load(Usuario.class, ch.getUsuario_solicitante());
+						Hibernate.initialize(solicitante);
+			%>
+			<tbody>
+				<tr>
+					<td><%=ch.getId()%></td>
+					<td><%=solicitante.getLogin()%></td>
+					<td><%=ch.getNome()%></td>
+					<td><%=ch.getDescricao()%></td>
+					<td>
+						<%
+							if (ch.getTipo() == 1) {
+						%>Baixo<%
+							} else if (ch.getTipo() == 2) {
+						%>Moderado<%
+							} else if (ch.getTipo() == 3) {
+						%>Crítico <%
+							}
+						%>
+					</td>
+					<td>
+						<%
+							if (ch.getStatus() == 1) {
+						%>Ativo<%
+							} else {
+						%>Inativo<%
+							}
+						%>
+					</td>
+					<td>
+						<%
+							if (ch.getStatus() == 1) {
+						%>
+						<center>
+							<a href="resolve-call.jsp?id=<%=ch.getId()%>"
+								class="button is-link" style="height: 25px">Resolver</a>
+						</center> <%
+ 	} else {
+ %> Resolvido <%
+ 	}
+ %>
+					</td>
+				</tr>
+			<tbody>
+				<%
+					}
+						tx.commit();
+					} catch (HibernateException ex) {
+						if (tx != null) {
+							tx.rollback();
+							ex.printStackTrace();
+						}
+					} finally {
+						sess.close();
+					}
+				%>
+			
+		</table>
+	</div>
 </body>
 </html>
