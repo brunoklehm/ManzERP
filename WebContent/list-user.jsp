@@ -102,8 +102,14 @@
 					<th>Senha</th>
 					<th>Tipo</th>
 					<th>Status</th>
+					<%
+						if (SingletonCurrentUser.getCurrentUser().getTipo() == 3) {
+					%>
 					<th style="text-align: center">Alterar</th>
 					<th style="text-align: center">Excluir</th>
+					<%
+						}
+					%>
 				</tr>
 			</thead>
 			<%
@@ -111,7 +117,7 @@
 					sess = factory.getCurrentSession();
 					try {
 						tx = sess.beginTransaction();
-						List usuarios = sess.createQuery("from Usuario").list();
+						List usuarios = sess.createQuery("from Usuario order by status desc, tipo desc, id desc").list();
 						for (Iterator iterator = usuarios.iterator(); iterator.hasNext();) {
 							Usuario us = (Usuario) iterator.next();
 			%>
@@ -142,10 +148,17 @@
 							}
 						%>
 					</td>
+					<%
+						if (SingletonCurrentUser.getCurrentUser().getTipo() == 3) {
+					%>
 					<td><a href="edit-user.jsp" title="Alterar"><center>
 								<img src="img/lapis.png" style="width: 12px"></a></td>
-					<td><a href="exclude-user.jsp" title="Excluir"><center>
+					<td><a href="exclude-user.jsp?id=<%=us.getId()%>"
+						title="Excluir"><center>
 								<img src="img/lixeira.png" style="width: 12px"></a></td>
+					<%
+						}
+					%>
 				</tr>
 			<tbody>
 				<%
