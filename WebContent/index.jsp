@@ -10,7 +10,7 @@
 <html>
 <head>
 <title>Início - ManzERP</title>
-<link rel="icon" href="/img/favicon.png">
+<link rel="icon" href="img/favicon.png">
 <link rel="stylesheet" type="text/css" href="css/bulma.min.css">
 </head>
 <body>
@@ -21,24 +21,10 @@
 
 		factory = ConnectionDB.getSessionFactory();
 
-		Usuario user = null;
-		if (request.getParameter("login") != null && request.getParameter("senha") != null) {
-			sess = factory.openSession();
-			Query query = sess.createQuery("from Usuario where login = :login and senha = :senha and status = 1");
-
-			query.setParameter("login", request.getParameter("login"));
-			query.setParameter("senha", request.getParameter("senha"));
-			results = query.list();
-			if (results.isEmpty()) {
-				response.sendRedirect("login.jsp");
-			} else {
-				user = (Usuario) results.get(0);
-				SingletonCurrentUser.setCurrentUser(user);
-				sess.clear();
-			}
-		} else if (SingletonCurrentUser.getCurrentUser() == null) {
+		if (SingletonCurrentUser.getCurrentUser() == null) {
 			response.sendRedirect("login.jsp");
 		}
+		if (SingletonCurrentUser.getCurrentUser() != null) {
 	%>
 	<nav class="navbar is-link" role="navigation"
 		aria-label="dropdown navigation">
@@ -47,8 +33,7 @@
 				width="50">
 			</a>
 			<%
-				if (SingletonCurrentUser.getCurrentUser() != null) {
-					if (SingletonCurrentUser.getCurrentUser().getTipo() == 3) {
+				if (SingletonCurrentUser.getCurrentUser().getTipo() == 3) {
 			%><a class="navbar-item" href="create-user.jsp"> Criar usuário </a>
 			<%
 				}
@@ -84,9 +69,6 @@
 				</a>
 				<div class="navbar-dropdown">
 					<a class="navbar-item is-primary"> <%=SingletonCurrentUser.getCurrentUser().getNome()%>
-						<%
-							}
-						%>
 					</a> <a href="logoff.jsp" class="navbar-item"> Logoff </a>
 				</div>
 			</div>
@@ -107,5 +89,8 @@
 			</div>
 		</div>
 	</div>
+	<%
+		}
+	%>
 </body>
 </html>

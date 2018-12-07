@@ -6,13 +6,14 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Login - ManzERP</title>
+<link rel="icon" href="img/favicon.png">
 <link rel="stylesheet" type="text/css" href="css/bulma.min.css">
 </head>
 <body>
 	<%
 		ConnectionDB.getSessionFactory();
 	%>
-	<form method="post" action="index.jsp">
+	<form method="post" action="set-user-data.jsp">
 		<div class="container" style="margin-top: 200px">
 			<div class="columns is-mobile is-centered">
 				<div class="column is-one-quarter">
