@@ -16,7 +16,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Meus Chamados - ManzERP</title>
+<title>Meus chamados - ManzERP</title>
 <link rel="icon" href="img/favicon.png">
 <link rel="stylesheet" type="text/css" href="css/bulma.min.css">
 </head>
@@ -25,6 +25,8 @@
 		SessionFactory factory = null;
 		Session sess = null;
 		Transaction tx = null;
+
+		SingletonCurrentUser.setNull();
 
 		factory = ConnectionDB.getSessionFactory();
 

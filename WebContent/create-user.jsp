@@ -18,6 +18,8 @@
 		SessionFactory factory = null;
 		Session sess = null;
 
+		SingletonCurrentUser.setNull();
+
 		factory = ConnectionDB.getSessionFactory();
 
 		Usuario user = null;

@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Criar Chamado - ManzERP</title>
+<title>Criar chamado - ManzERP</title>
 <link rel="icon" href="img/favicon.png">
 <link rel="stylesheet" type="text/css" href="css/bulma.min.css">
 </head>
@@ -17,6 +17,8 @@
 	<%
 		SessionFactory factory = null;
 		Session sess = null;
+
+		SingletonCurrentUser.setNull();
 
 		factory = ConnectionDB.getSessionFactory();
 

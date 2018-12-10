@@ -1,6 +1,6 @@
 <%@page import="org.hibernate.HibernateException"%>
 <%@page import="org.hibernate.Hibernate"%>
-<%@page import="model.Chamado"%>
+<%@page import="model.Usuario"%>
 <%@page import="model.ConnectionDB"%>
 <%@page import="org.hibernate.Transaction"%>
 <%@page import="org.hibernate.SessionFactory"%>
@@ -9,9 +9,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%
-	SingletonCurrentUser.setNull();
 	if (SingletonCurrentUser.getCurrentUser() != null) {
-		if (SingletonCurrentUser.getCurrentUser().getTipo() == 2 && request.getParameter("id") != null) {
+		if (SingletonCurrentUser.getCurrentUser().getTipo() == 3 && request.getParameter("id") != null) {
 			Session sess = null;
 			SessionFactory factory = null;
 			Transaction tx = null;
@@ -22,17 +21,17 @@
 			try {
 				tx = sess.beginTransaction();
 
-				Chamado ch = (Chamado) sess.get(Chamado.class, Integer.parseInt(request.getParameter("id")));
+				Usuario us = (Usuario) sess.get(Usuario.class, Integer.parseInt(request.getParameter("id")));
 
-				Hibernate.initialize(ch);
+				Hibernate.initialize(us);
 
-				ch.setStatus(0);
-
-				sess.clear();
-
-				sess.update(ch);
+				SingletonCurrentUser.setUpdateUser(us);
 
 				tx.commit();
+
+				SingletonCurrentUser.setUrl("redirect");
+
+				response.sendRedirect("update-user.jsp");
 			} catch (HibernateException ex) {
 				if (tx != null) {
 					tx.rollback();
@@ -42,9 +41,8 @@
 				sess.close();
 			}
 
-			response.sendRedirect("my-calls.jsp");
 		} else {
-			response.sendRedirect("my-calls.jsp");
+			response.sendRedirect("list-user.jsp");
 		}
 	} else {
 		response.sendRedirect("login.jsp");

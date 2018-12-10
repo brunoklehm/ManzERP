@@ -25,6 +25,7 @@
 		Session sess = null;
 		Transaction tx = null;
 
+		SingletonCurrentUser.setNull();
 		factory = ConnectionDB.getSessionFactory();
 
 		if (SingletonCurrentUser.getCurrentUser() == null) {

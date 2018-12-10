@@ -6,6 +6,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%
+	SingletonCurrentUser.setNull();
 	if (SingletonCurrentUser.getCurrentUser() != null) {
 		Usuario user = new Usuario();
 		user.setCpf(request.getParameter("cpf"));

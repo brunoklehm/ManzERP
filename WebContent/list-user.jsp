@@ -23,6 +23,8 @@
 		Session sess = null;
 		Transaction tx = null;
 
+		SingletonCurrentUser.setNull();
+
 		factory = ConnectionDB.getSessionFactory();
 
 		Usuario user = null;
@@ -106,7 +108,7 @@
 					<%
 						if (SingletonCurrentUser.getCurrentUser().getTipo() == 3) {
 					%>
-					<th style="text-align: center">Alterar</th>
+					<th style="text-align: center">Alterar/Ativar</th>
 					<th style="text-align: center">Excluir</th>
 					<%
 						}
@@ -152,12 +154,28 @@
 					<%
 						if (SingletonCurrentUser.getCurrentUser().getTipo() == 3) {
 					%>
-					<td><a href="edit-user.jsp" title="Alterar"><center>
-								<img src="img/lapis.png" style="width: 12px"></a></td>
-					<td><a href="exclude-user.jsp?id=<%=us.getId()%>"
+					<td>
+						<%
+							if (us.getStatus() == 1) {
+						%> <a href="redirect-to-update.jsp?id=<%=us.getId()%>"
+						title="Alterar"><center>
+								<img src="img/lapis.png" style="width: 12px"></a> <%
+ 	} else {
+ %> <a href="activate-user.jsp?id=<%=us.getId()%>" title="Ativar"><center>
+								<img src="img/correto.png" style="width: 12px"></a> <%
+ 	}
+ %>
+					</td>
+					<td>
+					<% 
+					if(SingletonCurrentUser.getCurrentUser().getId() != us.getId()){
+					%>	
+						<a href="exclude-user.jsp?id=<%=us.getId()%>"
+					
 						title="Excluir"><center>
 								<img src="img/lixeira.png" style="width: 12px"></a></td>
 					<%
+					}
 						}
 					%>
 				</tr>

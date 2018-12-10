@@ -1,3 +1,4 @@
+<%@page import="model.SingletonCurrentUser"%>
 <%@page import="model.ConnectionDB"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
@@ -12,12 +13,33 @@
 <body>
 	<%
 		ConnectionDB.getSessionFactory();
+		if (SingletonCurrentUser.getCurrentUser() == null) {
 	%>
 	<form method="post" action="set-user-data.jsp">
 		<div class="container" style="margin-top: 200px">
 			<div class="columns is-mobile is-centered">
 				<div class="column is-one-quarter">
 					<h1 class="title" style="text-align: center">Login</h1>
+
+
+
+
+
+					<%
+						String kappa = request.getParameter("fail");
+							if (kappa != null) {
+					%>
+					<article class="message is-danger">
+					<div class="message-body">Incorrect Login</div>
+					</article>
+					<%
+						}
+					%>
+
+
+
+
+
 					<div class="field">
 						<div class="control">
 							<input class="input is-rounded" type="text" placeholder="Usuário"
@@ -36,5 +58,11 @@
 			</div>
 		</div>
 	</form>
+	<%
+		} else {
+			response.sendRedirect("index.jsp");
+		}
+	%>
+
 </body>
 </html>

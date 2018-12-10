@@ -12,6 +12,8 @@
 	Session sess = null;
 	List results = null;
 
+	SingletonCurrentUser.setNull();
+
 	factory = ConnectionDB.getSessionFactory();
 
 	Usuario user = null;
@@ -23,7 +25,7 @@
 		query.setParameter("senha", request.getParameter("senha"));
 		results = query.list();
 		if (results.isEmpty()) {
-			response.sendRedirect("login.jsp");
+			response.sendRedirect("login.jsp?fail=kappa");
 		} else {
 			user = (Usuario) results.get(0);
 			SingletonCurrentUser.setCurrentUser(user);
@@ -31,6 +33,6 @@
 			response.sendRedirect("index.jsp");
 		}
 	} else {
-		response.sendRedirect("login.jsp");
+		response.sendRedirect("login.jsp?fail=kappa");
 	}
 %>
