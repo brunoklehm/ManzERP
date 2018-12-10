@@ -96,7 +96,7 @@
 				<label class="label">Título</label>
 				<div class="control">
 					<input name="name" class="input" type="text"
-						placeholder="Título do chamado">
+						placeholder="Título do chamado" required>
 				</div>
 			</div>
 			<div class="field">
@@ -115,7 +115,7 @@
 				<label class="label">Descrição</label>
 				<div class="control">
 					<textarea class="textarea" style="height: 225px"
-						placeholder="Descrição do chamado..." name="description"></textarea>
+						placeholder="Descrição do chamado..." name="description" required></textarea>
 				</div>
 			</div>
 			<br>
@@ -123,7 +123,7 @@
 				<div class="field">
 					<div class="control">
 						<center>
-							<button class="button is-link" style="width: 45%" type="submit">Enviar</button>
+							<button class="button is-link" style="width: 45%" type="submit" required>Enviar</button>
 						</center>
 					</div>
 				</div>

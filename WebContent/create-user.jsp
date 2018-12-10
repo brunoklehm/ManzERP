@@ -94,14 +94,14 @@
 			<div class="field">
 				<label class="label">Nome</label>
 				<div class="control">
-					<input name="name" class="input" type="text" placeholder="Nome">
+					<input name="name" class="input" type="text" placeholder="Nome" required>
 				</div>
 			</div>
 			<div class="field">
 				<label class="label">CPF</label>
 				<div class="control">
 					<input name="cpf" class="input" type="text" maxlength="11"
-						minlength="11" placeholder="CPF">
+						minlength="11" placeholder="CPF" required>
 				</div>
 			</div>
 			<div class="field">
@@ -119,14 +119,14 @@
 			<div class="field">
 				<label class="label">Login</label>
 				<div class="control">
-					<input name="login" class="input" type="text" placeholder="Login">
+					<input name="login" class="input" type="text" placeholder="Login" required>
 				</div>
 			</div>
 			<div class="field">
 				<label class="label">Senha</label>
 				<div class="control">
 					<input name="pass" class="input" type="password"
-						placeholder="Senha">
+						placeholder="Senha" required>
 				</div>
 			</div>
 			<br>

@@ -88,14 +88,14 @@
 				<label class="label">Nome</label>
 				<div class="control">
 					<input name="name" class="input" type="text" placeholder="Nome..."
-						maxlength="11" minlength="11"
+						required
 						value="<%=SingletonCurrentUser.getUpdateUser().getNome()%>">
 				</div>
 			</div>
 			<div class="field">
 				<label class="label">CPF</label>
 				<div class="control">
-					<input name="cpf" class="input" type="text" placeholder="CPF..."
+					<input name="cpf" class="input" type="text" placeholder="CPF..." maxlength="11" minlength="11" required
 						value="<%=SingletonCurrentUser.getUpdateUser().getCpf()%>">
 				</div>
 			</div>
@@ -103,7 +103,7 @@
 				<label class="label">Login</label>
 				<div class="control">
 					<input name="login" class="input" type="text"
-						placeholder="Login..."
+						placeholder="Login..." required
 						value="<%=SingletonCurrentUser.getUpdateUser().getLogin()%>">
 				</div>
 			</div>
@@ -111,7 +111,7 @@
 				<label class="label">Senha</label>
 				<div class="control">
 					<input name="pass" class="input" type="password"
-						placeholder="Senha..."
+						placeholder="Senha..." required
 						value="<%=SingletonCurrentUser.getUpdateUser().getSenha()%>">
 				</div>
 			</div>

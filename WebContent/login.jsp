@@ -20,11 +20,6 @@
 			<div class="columns is-mobile is-centered">
 				<div class="column is-one-quarter">
 					<h1 class="title" style="text-align: center">Login</h1>
-
-
-
-
-
 					<%
 						String kappa = request.getParameter("fail");
 							if (kappa != null) {
@@ -35,11 +30,6 @@
 					<%
 						}
 					%>
-
-
-
-
-
 					<div class="field">
 						<div class="control">
 							<input class="input is-rounded" type="text" placeholder="Usuário"
