@@ -1,5 +1,5 @@
 <%@page import="model.Usuario"%>
-<%@page import="model.SingletonCurrentUser"%>
+<%@page import="model.Usuario"%>
 <%@page import="model.ConnectionDB"%>
 <%@page import="org.hibernate.Session"%>
 <%@page import="org.hibernate.SessionFactory"%>
@@ -18,14 +18,15 @@
 		SessionFactory factory = null;
 		Session sess = null;
 
-		SingletonCurrentUser.setNull();
+		session.setAttribute("updateUser", null);
+		session.setAttribute("urlRedirect", "");
 
 		factory = ConnectionDB.getSessionFactory();
 
 		Usuario user = null;
-		if (SingletonCurrentUser.getCurrentUser() != null) {
-			if (SingletonCurrentUser.getCurrentUser().getTipo() == 3) {
-				user = SingletonCurrentUser.getCurrentUser();
+		if (session.getAttribute("user") != null) {
+			if (((Usuario) session.getAttribute("user")).getTipo() == 3) {
+				user = ((Usuario) session.getAttribute("user"));
 			} else {
 				response.sendRedirect("index.jsp");
 			}
@@ -94,7 +95,8 @@
 			<div class="field">
 				<label class="label">Nome</label>
 				<div class="control">
-					<input name="name" class="input" type="text" placeholder="Nome" required>
+					<input name="name" class="input" type="text" placeholder="Nome"
+						required>
 				</div>
 			</div>
 			<div class="field">
@@ -119,7 +121,8 @@
 			<div class="field">
 				<label class="label">Login</label>
 				<div class="control">
-					<input name="login" class="input" type="text" placeholder="Login" required>
+					<input name="login" class="input" type="text" placeholder="Login"
+						required>
 				</div>
 			</div>
 			<div class="field">

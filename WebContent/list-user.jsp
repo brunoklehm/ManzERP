@@ -2,7 +2,7 @@
 <%@page import="org.hibernate.HibernateException"%>
 <%@page import="org.hibernate.Session"%>
 <%@page import="org.hibernate.SessionFactory"%>
-<%@page import="model.SingletonCurrentUser"%>
+<%@page import="model.Usuario"%>
 <%@page import="model.Usuario"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.List"%>
@@ -23,15 +23,16 @@
 		Session sess = null;
 		Transaction tx = null;
 
-		SingletonCurrentUser.setNull();
+		session.setAttribute("updateUser", null);
+		session.setAttribute("urlRedirect", "");
 
 		factory = ConnectionDB.getSessionFactory();
 
 		Usuario user = null;
-		if (SingletonCurrentUser.getCurrentUser() != null) {
-			if (SingletonCurrentUser.getCurrentUser().getTipo() == 2
-					|| SingletonCurrentUser.getCurrentUser().getTipo() == 3) {
-				user = SingletonCurrentUser.getCurrentUser();
+		if (session.getAttribute("user") != null) {
+			if (((Usuario) session.getAttribute("user")).getTipo() == 2
+					|| ((Usuario) session.getAttribute("user")).getTipo() == 3) {
+				user = ((Usuario) session.getAttribute("user"));
 			} else {
 				response.sendRedirect("index.jsp");
 			}
@@ -106,7 +107,7 @@
 					<th>Tipo</th>
 					<th>Status</th>
 					<%
-						if (SingletonCurrentUser.getCurrentUser().getTipo() == 3) {
+						if (((Usuario) session.getAttribute("user")).getTipo() == 3) {
 					%>
 					<th style="text-align: center">Alterar/Ativar</th>
 					<th style="text-align: center">Excluir</th>
@@ -152,7 +153,7 @@
 						%>
 					</td>
 					<%
-						if (SingletonCurrentUser.getCurrentUser().getTipo() == 3) {
+						if (((Usuario) session.getAttribute("user")).getTipo() == 3) {
 					%>
 					<td>
 						<%
@@ -167,16 +168,14 @@
  %>
 					</td>
 					<td>
-					<% 
-					if(SingletonCurrentUser.getCurrentUser().getId() != us.getId()){
-					%>	
-						<a href="exclude-user.jsp?id=<%=us.getId()%>"
-					
-						title="Excluir"><center>
-								<img src="img/lixeira.png" style="width: 12px"></a></td>
+						<%
+							if (((Usuario) session.getAttribute("user")).getId() != us.getId()) {
+						%> <a href="exclude-user.jsp?id=<%=us.getId()%>" title="Excluir"><center>
+								<img src="img/lixeira.png" style="width: 12px"></a>
+					</td>
 					<%
-					}
 						}
+									}
 					%>
 				</tr>
 			<tbody>

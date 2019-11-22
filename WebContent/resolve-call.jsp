@@ -5,13 +5,14 @@
 <%@page import="org.hibernate.Transaction"%>
 <%@page import="org.hibernate.SessionFactory"%>
 <%@page import="org.hibernate.Session"%>
-<%@page import="model.SingletonCurrentUser"%>
+<%@page import="model.Usuario"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%
-	SingletonCurrentUser.setNull();
-	if (SingletonCurrentUser.getCurrentUser() != null) {
-		if (SingletonCurrentUser.getCurrentUser().getTipo() == 2 && request.getParameter("id") != null) {
+	session.setAttribute("updateUser", null);
+	session.setAttribute("urlRedirect", "");
+	if (session.getAttribute("user") != null) {
+		if (((Usuario) session.getAttribute("user")).getTipo() == 2 && request.getParameter("id") != null) {
 			Session sess = null;
 			SessionFactory factory = null;
 			Transaction tx = null;

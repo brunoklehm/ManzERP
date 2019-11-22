@@ -5,13 +5,12 @@
 <%@page import="model.Usuario"%>
 <%@page import="org.hibernate.Hibernate"%>
 <%@page import="org.hibernate.HibernateException"%>
-<%@page import="model.SingletonCurrentUser"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%
-	if (SingletonCurrentUser.getCurrentUser() != null) {
-		if (SingletonCurrentUser.getUpdateUser() != null && SingletonCurrentUser.getUrl().equals("redirect")
-				&& SingletonCurrentUser.getCurrentUser().getTipo() == 3) {
+	if (session.getAttribute("user") != null) {
+		if (((Usuario) session.getAttribute("updateUser")) != null && session.getAttribute("urlRedirect").equals("redirect")
+				&& ((Usuario) session.getAttribute("user")).getTipo() == 3) {
 			Session sess = null;
 			SessionFactory factory = null;
 			Transaction tx = null;
@@ -22,12 +21,12 @@
 			try {
 				tx = sess.beginTransaction();
 
-				SingletonCurrentUser.getUpdateUser().setCpf(request.getParameter("cpf"));
-				SingletonCurrentUser.getUpdateUser().setNome(request.getParameter("name"));
-				SingletonCurrentUser.getUpdateUser().setLogin(request.getParameter("login"));
-				SingletonCurrentUser.getUpdateUser().setSenha(request.getParameter("pass"));
+				((Usuario) session.getAttribute("updateUser")).setCpf(request.getParameter("cpf"));
+				((Usuario) session.getAttribute("updateUser")).setNome(request.getParameter("name"));
+				((Usuario) session.getAttribute("updateUser")).setLogin(request.getParameter("login"));
+				((Usuario) session.getAttribute("updateUser")).setSenha(request.getParameter("pass"));
 
-				sess.update(SingletonCurrentUser.getUpdateUser());
+				sess.update(((Usuario) session.getAttribute("updateUser")));
 				tx.commit();
 			} catch (HibernateException ex) {
 				if (tx != null) {
@@ -38,7 +37,9 @@
 				sess.close();
 			}
 
-			SingletonCurrentUser.setNull();
+			
+			session.setAttribute("updateUser", null);
+			session.setAttribute("urlRedirect", "");
 
 			response.sendRedirect("list-user.jsp");
 		} else {

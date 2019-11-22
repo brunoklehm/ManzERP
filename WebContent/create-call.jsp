@@ -1,4 +1,4 @@
-<%@page import="model.SingletonCurrentUser"%>
+<%@page import="model.Usuario"%>
 <%@page import="model.ConnectionDB"%>
 <%@page import="org.hibernate.Session"%>
 <%@page import="org.hibernate.SessionFactory"%>
@@ -18,15 +18,16 @@
 		SessionFactory factory = null;
 		Session sess = null;
 
-		SingletonCurrentUser.setNull();
+		session.setAttribute("updateUser", null);
+		session.setAttribute("urlRedirect", "");
 
 		factory = ConnectionDB.getSessionFactory();
 
 		Usuario user = null;
-		if (SingletonCurrentUser.getCurrentUser() != null) {
-			if (SingletonCurrentUser.getCurrentUser().getTipo() == 1
-					|| SingletonCurrentUser.getCurrentUser().getTipo() == 3) {
-				user = SingletonCurrentUser.getCurrentUser();
+		if (session.getAttribute("user") != null) {
+			if (((Usuario) session.getAttribute("user")).getTipo() == 1
+					|| ((Usuario) session.getAttribute("user")).getTipo() == 3) {
+				user = ((Usuario) session.getAttribute("user"));
 			} else {
 				response.sendRedirect("index.jsp");
 			}
@@ -123,7 +124,8 @@
 				<div class="field">
 					<div class="control">
 						<center>
-							<button class="button is-link" style="width: 45%" type="submit" required>Enviar</button>
+							<button class="button is-link" style="width: 45%" type="submit"
+								required>Enviar</button>
 						</center>
 					</div>
 				</div>

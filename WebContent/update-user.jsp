@@ -1,7 +1,7 @@
 <%@page
 	import="com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Single"%>
-<%@page import="model.SingletonCurrentUser"%>
 <%@page import="model.ConnectionDB"%>
+<%@page import="model.Usuario"%>
 <%@page import="java.util.List"%>
 <%@page import="org.hibernate.Session"%>
 <%@page import="org.hibernate.SessionFactory"%>
@@ -23,9 +23,10 @@
 
 		factory = ConnectionDB.getSessionFactory();
 
-		if (SingletonCurrentUser.getCurrentUser() != null) {
-			if (SingletonCurrentUser.getUpdateUser() != null && SingletonCurrentUser.getUrl().equals("redirect")) {
-				if (SingletonCurrentUser.getCurrentUser().getTipo() == 3) {
+		if (session.getAttribute("user") != null) {
+			if (((Usuario) session.getAttribute("updateUser")) != null
+					&& session.getAttribute("urlRedirect").equals("redirect")) {
+				if (((Usuario) session.getAttribute("user")).getTipo() == 3) {
 	%>
 	<nav class="navbar is-link" role="navigation"
 		aria-label="dropdown navigation">
@@ -34,14 +35,14 @@
 				width="50">
 			</a>
 			<%
-				if (SingletonCurrentUser.getCurrentUser().getTipo() == 3) {
+				if (((Usuario) session.getAttribute("user")).getTipo() == 3) {
 			%><a class="navbar-item" href="create-user.jsp"> Criar usuário </a>
 			<%
 				}
 			%>
 			<%
-				if (SingletonCurrentUser.getCurrentUser().getTipo() == 1
-									|| SingletonCurrentUser.getCurrentUser().getTipo() == 3) {
+				if (((Usuario) session.getAttribute("user")).getTipo() == 1
+									|| ((Usuario) session.getAttribute("user")).getTipo() == 3) {
 			%>
 			<a class="navbar-item" href="create-call.jsp"> Criar chamado </a>
 			<%
@@ -49,15 +50,15 @@
 			%>
 			<a class="navbar-item" href="list-call.jsp"> Chamados </a>
 			<%
-				if (SingletonCurrentUser.getCurrentUser().getTipo() == 2
-									|| SingletonCurrentUser.getCurrentUser().getTipo() == 3) {
+				if (((Usuario) session.getAttribute("user")).getTipo() == 2
+									|| ((Usuario) session.getAttribute("user")).getTipo() == 3) {
 			%>
 			<a class="navbar-item" href="list-user.jsp"> Usuários </a>
 			<%
 				}
 			%>
 			<%
-				if (SingletonCurrentUser.getCurrentUser().getTipo() == 2) {
+				if (((Usuario) session.getAttribute("user")).getTipo() == 2) {
 			%>
 			<a class="navbar-item" href="my-calls.jsp"> Meus Chamados </a>
 			<%
@@ -69,7 +70,7 @@
 				<a class="navbar-link"> <img src="img/user.png">
 				</a>
 				<div class="navbar-dropdown">
-					<a class="navbar-item is-primary"> <%=SingletonCurrentUser.getCurrentUser().getNome()%>
+					<a class="navbar-item is-primary"> <%=((Usuario) session.getAttribute("user")).getNome()%>
 					</a> <a href="logoff.jsp" class="navbar-item"> Logoff </a>
 				</div>
 			</div>
@@ -89,14 +90,15 @@
 				<div class="control">
 					<input name="name" class="input" type="text" placeholder="Nome..."
 						required
-						value="<%=SingletonCurrentUser.getUpdateUser().getNome()%>">
+						value="<%=((Usuario) session.getAttribute("updateUser")).getNome()%>">
 				</div>
 			</div>
 			<div class="field">
 				<label class="label">CPF</label>
 				<div class="control">
-					<input name="cpf" class="input" type="text" placeholder="CPF..." maxlength="11" minlength="11" required
-						value="<%=SingletonCurrentUser.getUpdateUser().getCpf()%>">
+					<input name="cpf" class="input" type="text" placeholder="CPF..."
+						maxlength="11" minlength="11" required
+						value="<%=((Usuario) session.getAttribute("updateUser")).getCpf()%>">
 				</div>
 			</div>
 			<div class="field">
@@ -104,7 +106,7 @@
 				<div class="control">
 					<input name="login" class="input" type="text"
 						placeholder="Login..." required
-						value="<%=SingletonCurrentUser.getUpdateUser().getLogin()%>">
+						value="<%=((Usuario) session.getAttribute("updateUser")).getLogin()%>">
 				</div>
 			</div>
 			<div class="field">
@@ -112,7 +114,7 @@
 				<div class="control">
 					<input name="pass" class="input" type="password"
 						placeholder="Senha..." required
-						value="<%=SingletonCurrentUser.getUpdateUser().getSenha()%>">
+						value="<%=((Usuario) session.getAttribute("updateUser")).getSenha()%>">
 				</div>
 			</div>
 			<br>

@@ -1,4 +1,3 @@
-<%@page import="model.SingletonCurrentUser"%>
 <%@page import="model.ConnectionDB"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
@@ -13,7 +12,7 @@
 <body>
 	<%
 		ConnectionDB.getSessionFactory();
-		if (SingletonCurrentUser.getCurrentUser() == null) {
+		if (session.getAttribute("user") == null) {
 	%>
 	<form method="post" action="set-user-data.jsp">
 		<div class="container" style="margin-top: 200px">

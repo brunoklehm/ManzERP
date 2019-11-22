@@ -4,7 +4,7 @@
 <%@page import="java.util.Iterator"%>
 <%@page import="model.Chamado"%>
 <%@page import="model.Usuario"%>
-<%@page import="model.SingletonCurrentUser"%>
+<%@page import="model.Usuario"%>
 <%@page import="model.ConnectionDB"%>
 <%@page import="org.hibernate.Transaction"%>
 <%@page import="org.hibernate.Session"%>
@@ -25,10 +25,11 @@
 		Session sess = null;
 		Transaction tx = null;
 
-		SingletonCurrentUser.setNull();
+		session.setAttribute("updateUser", null);
+		session.setAttribute("urlRedirect", "");
 		factory = ConnectionDB.getSessionFactory();
 
-		if (SingletonCurrentUser.getCurrentUser() == null) {
+		if (session.getAttribute("user") == null) {
 			response.sendRedirect("login.jsp");
 		}
 	%>
@@ -39,15 +40,15 @@
 			width="50">
 		</a>
 		<%
-			if (SingletonCurrentUser.getCurrentUser() != null) {
-				if (SingletonCurrentUser.getCurrentUser().getTipo() == 3) {
+			if (((Usuario) session.getAttribute("user")) != null) {
+				if (((Usuario) session.getAttribute("user")).getTipo() == 3) {
 		%><a class="navbar-item" href="create-user.jsp"> Criar usuário </a>
 		<%
 			}
 		%>
 		<%
-			if (SingletonCurrentUser.getCurrentUser().getTipo() == 1
-						|| SingletonCurrentUser.getCurrentUser().getTipo() == 3) {
+			if (((Usuario) session.getAttribute("user")).getTipo() == 1
+						|| ((Usuario) session.getAttribute("user")).getTipo() == 3) {
 		%>
 		<a class="navbar-item" href="create-call.jsp"> Criar chamado </a>
 		<%
@@ -55,15 +56,15 @@
 		%>
 		<a class="navbar-item" href="list-call.jsp"> Chamados </a>
 		<%
-			if (SingletonCurrentUser.getCurrentUser().getTipo() == 2
-						|| SingletonCurrentUser.getCurrentUser().getTipo() == 3) {
+			if (((Usuario) session.getAttribute("user")).getTipo() == 2
+						|| ((Usuario) session.getAttribute("user")).getTipo() == 3) {
 		%>
 		<a class="navbar-item" href="list-user.jsp"> Usuários </a>
 		<%
 			}
 		%>
 		<%
-			if (SingletonCurrentUser.getCurrentUser().getTipo() == 2) {
+			if (((Usuario) session.getAttribute("user")).getTipo() == 2) {
 		%>
 		<a class="navbar-item" href="my-calls.jsp"> Meus Chamados </a>
 		<%
@@ -75,7 +76,7 @@
 			<a class="navbar-link"> <img src="img/user.png">
 			</a>
 			<div class="navbar-dropdown">
-				<a class="navbar-item is-primary"> <%=SingletonCurrentUser.getCurrentUser().getNome()%>
+				<a class="navbar-item is-primary"> <%=((Usuario) session.getAttribute("user")).getNome()%>
 				</a><a href="logoff.jsp" class="navbar-item"> Logoff </a>
 			</div>
 		</div>
@@ -95,14 +96,14 @@
 				<tr>
 					<th>ID</th>
 					<%
-						if (SingletonCurrentUser.getCurrentUser().getTipo() != 1) {
+						if (((Usuario) session.getAttribute("user")).getTipo() != 1) {
 					%>
 					<th>Solicitante</th>
 					<%
 						}
 					%>
 					<%
-						if (SingletonCurrentUser.getCurrentUser().getTipo() != 2) {
+						if (((Usuario) session.getAttribute("user")).getTipo() != 2) {
 					%>
 					<th>Atendente</th>
 					<%
@@ -113,7 +114,7 @@
 					<th>Tipo</th>
 					<th>Status</th>
 					<%
-						if (SingletonCurrentUser.getCurrentUser().getTipo() == 2) {
+						if (((Usuario) session.getAttribute("user")).getTipo() == 2) {
 					%>
 					<th style="text-align: center">Atender</th>
 					<%
@@ -128,11 +129,11 @@
 					try {
 						tx = sess.beginTransaction();
 						List chamados = null;
-						if (SingletonCurrentUser.getCurrentUser().getTipo() == 1) {
+						if (((Usuario) session.getAttribute("user")).getTipo() == 1) {
 							chamados = sess.createQuery("from Chamado where usuario_solicitante = "
-									+ SingletonCurrentUser.getCurrentUser().getId() + " order by status desc, id desc")
+									+ ((Usuario) session.getAttribute("user")).getId() + " order by status desc, id desc")
 									.list();
-						} else if (SingletonCurrentUser.getCurrentUser().getTipo() == 2) {
+						} else if (((Usuario) session.getAttribute("user")).getTipo() == 2) {
 							chamados = sess.createQuery(
 									"from Chamado where status = 1 order by usuario_atendente asc, tipo desc, id desc")
 									.list();
@@ -158,18 +159,18 @@
 				<tr>
 					<td><%=ch.getId()%></td>
 					<%
-						if (SingletonCurrentUser.getCurrentUser().getTipo() != 1) {
+						if (((Usuario) session.getAttribute("user")).getTipo() != 1) {
 					%>
 					<td><%=solicitante.getLogin()%></td>
 					<%
 						}
 					%>
 					<%
-						if (SingletonCurrentUser.getCurrentUser().getTipo() != 2 && atendente != null) {
+						if (((Usuario) session.getAttribute("user")).getTipo() != 2 && atendente != null) {
 					%>
 					<td><%=atendente.getLogin()%></td>
 					<%
-						} else if (SingletonCurrentUser.getCurrentUser().getTipo() != 2) {
+						} else if (((Usuario) session.getAttribute("user")).getTipo() != 2) {
 					%><td>Fila de espera</td>
 					<%
 						}
@@ -197,7 +198,7 @@
 						%>
 					</td>
 					<%
-						if (SingletonCurrentUser.getCurrentUser().getTipo() == 2) {
+						if (((Usuario) session.getAttribute("user")).getTipo() == 2) {
 					%>
 					<td>
 						<%

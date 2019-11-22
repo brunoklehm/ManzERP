@@ -3,7 +3,7 @@
 <%@page import="java.util.Iterator"%>
 <%@page import="model.Chamado"%>
 <%@page import="org.hibernate.Hibernate"%>
-<%@page import="model.SingletonCurrentUser"%>
+<%@page import="model.Usuario"%>
 <%@page import="org.hibernate.Query"%>
 <%@page import="model.Usuario"%>
 <%@page import="model.ConnectionDB"%>
@@ -26,14 +26,15 @@
 		Session sess = null;
 		Transaction tx = null;
 
-		SingletonCurrentUser.setNull();
+		session.setAttribute("updateUser", null);
+		session.setAttribute("urlRedirect", "");
 
 		factory = ConnectionDB.getSessionFactory();
 
 		Usuario user = null;
-		if (SingletonCurrentUser.getCurrentUser() != null) {
-			if (SingletonCurrentUser.getCurrentUser().getTipo() == 2) {
-				user = SingletonCurrentUser.getCurrentUser();
+		if (session.getAttribute("user") != null) {
+			if (((Usuario) session.getAttribute("user")).getTipo() == 2) {
+				user = ((Usuario) session.getAttribute("user"));
 			} else {
 				response.sendRedirect("index.jsp");
 			}
@@ -82,7 +83,7 @@
 			<a class="navbar-link"> <img src="img/user.png">
 			</a>
 			<div class="navbar-dropdown">
-				<a class="navbar-item is-primary"> <%=SingletonCurrentUser.getCurrentUser().getNome()%>
+				<a class="navbar-item is-primary"> <%=((Usuario) session.getAttribute("user")).getNome()%>
 					<%
 						}
 					%>
@@ -119,7 +120,7 @@
 					tx = sess.beginTransaction();
 					List chamados = null;
 					chamados = sess.createQuery("from Chamado where usuario_atendente = "
-							+ SingletonCurrentUser.getCurrentUser().getId() + " order by status desc, tipo desc, id asc")
+							+ ((Usuario) session.getAttribute("user")).getId() + " order by status desc, tipo desc, id asc")
 							.list();
 
 					for (Iterator iterator = chamados.iterator(); iterator.hasNext();) {

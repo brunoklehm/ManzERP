@@ -1,4 +1,3 @@
-<%@page import="model.SingletonCurrentUser"%>
 <%@page import="org.hibernate.Query"%>
 <%@page import="model.Usuario"%>
 <%@page import="model.ConnectionDB"%>
@@ -12,7 +11,8 @@
 	Session sess = null;
 	List results = null;
 
-	SingletonCurrentUser.setNull();
+	session.setAttribute("updateUser", null);
+	session.setAttribute("urlRedirect", "");
 
 	factory = ConnectionDB.getSessionFactory();
 
@@ -29,7 +29,7 @@
 			response.sendRedirect("login.jsp");
 		} else {
 			user = (Usuario) results.get(0);
-			SingletonCurrentUser.setCurrentUser(user);
+			session.setAttribute("user", user);
 			sess.clear();
 			response.sendRedirect("index.jsp");
 		}

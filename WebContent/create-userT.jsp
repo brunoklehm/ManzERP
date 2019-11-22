@@ -1,4 +1,4 @@
-<%@page import="model.SingletonCurrentUser"%>
+<%@page import="model.Usuario"%>
 <%@page import="model.ConnectionDB"%>
 <%@page import="org.hibernate.Session"%>
 <%@page import="org.hibernate.SessionFactory"%>
@@ -6,8 +6,9 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%
-	SingletonCurrentUser.setNull();
-	if (SingletonCurrentUser.getCurrentUser() != null) {
+	session.setAttribute("updateUser", null);
+	session.setAttribute("urlRedirect", "");
+	if (session.getAttribute("user") != null) {
 		Usuario user = new Usuario();
 		user.setCpf(request.getParameter("cpf"));
 		user.setNome(request.getParameter("name"));

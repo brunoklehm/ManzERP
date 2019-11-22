@@ -5,12 +5,12 @@
 <%@page import="org.hibernate.Transaction"%>
 <%@page import="org.hibernate.SessionFactory"%>
 <%@page import="org.hibernate.Session"%>
-<%@page import="model.SingletonCurrentUser"%>
+<%@page import="model.Usuario"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%
-	if (SingletonCurrentUser.getCurrentUser() != null) {
-		if (SingletonCurrentUser.getCurrentUser().getTipo() == 3 && request.getParameter("id") != null) {
+	if (session.getAttribute("user") != null) {
+		if (((Usuario) session.getAttribute("user")).getTipo() == 3 && request.getParameter("id") != null) {
 			Session sess = null;
 			SessionFactory factory = null;
 			Transaction tx = null;
@@ -25,11 +25,11 @@
 
 				Hibernate.initialize(us);
 
-				SingletonCurrentUser.setUpdateUser(us);
+				session.setAttribute("updateUser", us);
 
 				tx.commit();
 
-				SingletonCurrentUser.setUrl("redirect");
+				session.setAttribute("urlRedirect", "redirect");
 
 				response.sendRedirect("update-user.jsp");
 			} catch (HibernateException ex) {
