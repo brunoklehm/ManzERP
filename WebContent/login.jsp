@@ -21,8 +21,13 @@
 				<div class="column is-one-quarter">
 					<h1 class="title" style="text-align: center">Login</h1>
 					<%
-						String kappa = request.getParameter("fail");
-							if (kappa != null) {
+						boolean incorrectLogin;
+							if (session.getAttribute("incorrectLogin") != null) {
+								incorrectLogin = (Boolean) session.getAttribute("incorrectLogin");
+							} else {
+								incorrectLogin = false;
+							}
+							if (incorrectLogin) {
 					%>
 					<article class="message is-danger">
 					<div class="message-body">Incorrect Login</div>

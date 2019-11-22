@@ -19,8 +19,8 @@
 		Session sess = null;
 		List results = null;
 
-		SingletonCurrentUser.setNull();
-
+		SingletonCurrentUser.setNull();	
+		
 		factory = ConnectionDB.getSessionFactory();
 
 		if (SingletonCurrentUser.getCurrentUser() == null) {
