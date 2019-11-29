@@ -15,8 +15,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Listar chamados - ManzERP</title>
-<link rel="icon" href="img/favicon.png">
+<title>Listar chamados - Ronaldo Chamados</title>
+<link rel="icon" href="img/RonaldoChamados.png">
 <link rel="stylesheet" type="text/css" href="css/bulma.min.css">
 </head>
 <body>
@@ -37,7 +37,7 @@
 		aria-label="dropdown navigation">
 	<div class="navbar-start">
 		<a href="index.jsp" class="navbar-item"> <img src="img/logo.png"
-			width="50">
+			width="30">
 		</a>
 		<%
 			if (((Usuario) session.getAttribute("user")) != null) {
@@ -89,9 +89,11 @@
 			<h1 class="title">Chamados</h1>
 			</section>
 		</center>
-		<br>
+		<br> <input id="inputCall" type="text" onkeyup="functionSearch()"
+			placeholder="Pesquisar por ID" class="input is-rounded" style="max-width: 150px;"> <br><br> 
 		<table
-			class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+			class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
+			id="tableCalls">
 			<thead>
 				<tr>
 					<th>ID</th>
@@ -235,5 +237,29 @@
 	<%
 		}
 	%>
+	<script>
+		function functionSearch() {
+			// Declare variables
+			var input, filter, table, tr, td, i, txtValue;
+			input = document.getElementById("inputCall");
+			filter = input.value.toUpperCase();
+			table = document.getElementById("tableCalls");
+			tr = table.getElementsByTagName("tr");
+
+			// Loop through all table rows, and hide those who don't match the search query
+			for (i = 0; i < tr.length; i++) {
+				td = tr[i].getElementsByTagName("td")[0];
+				if (td) {
+					txtValue = td.textContent || td.innerText;
+					if (txtValue.toUpperCase().includes(filter)) {
+						tr[i].style.display = "";
+					} else {
+						tr[i].style.display = "none";
+					}
+				}
+
+			}
+		}
+	</script>
 </body>
 </html>

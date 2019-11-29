@@ -9,8 +9,8 @@
 	pageEncoding="ISO-8859-1"%>
 <html>
 <head>
-<title>Início - ManzERP</title>
-<link rel="icon" href="img/favicon.png">
+<title>Início - Ronaldo Chamados</title>
+<link rel="icon" href="img/RonaldoChamados.png">
 <link rel="stylesheet" type="text/css" href="css/bulma.min.css">
 </head>
 <body>
@@ -33,7 +33,7 @@
 		aria-label="dropdown navigation">
 		<div class="navbar-start">
 			<a href="index.jsp" class="navbar-item"> <img src="img/logo.png"
-				width="50">
+				width="30">
 			</a>
 			<%
 				if (((Usuario) session.getAttribute("user")).getTipo() == 3) {
@@ -81,12 +81,13 @@
 		<div class="columns is-mobile is-centered">
 			<div class="column is-half">
 				<p style="text-align: center">
-					<img src="img/weg-logo.jpg" alt="Logo da WEG" style="width: 50%">
+					<img src="img/RonaldoChamados.png" alt="Logo da WEG"
+						style="width: 50%">
 				</p>
-				<h1 class="title is-1" style="text-align: center; margin-top: 25px">ManzERP</h1>
+				<h1 class="title is-1" style="text-align: center; margin-top: 25px">Ronaldo Chamados</h1>
 				<p style="text-align: center; font-size: 18px">Bem-vindo ao
-					ManzERP, o ERP de chamados desenvolvido para facilitar o
-					gerenciamento de chamados entre os colaboradores da WEG.</p>
+					Ronaldo Chamadps, o ERP de chamados desenvolvido para facilitar o
+					gerenciamento de chamados entre os colaboradores da sua empresa</p>
 				<p style="margin-top: 50px; text-align: center; font-size: 18px">Escolha
 					uma das opções na barra de navegação para usar o sistema.</p>
 			</div>

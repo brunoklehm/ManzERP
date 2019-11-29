@@ -11,8 +11,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Modificar usuário - ManzERP</title>
-<link rel="icon" href="img/favicon.png">
+<title>Modificar usuário - Ronaldo Chamados</title>
+<link rel="icon" href="img/RonaldoChamados.png">
 <link rel="stylesheet" type="text/css" href="css/bulma.min.css">
 </head>
 <body>
@@ -32,7 +32,7 @@
 		aria-label="dropdown navigation">
 		<div class="navbar-start">
 			<a href="index.jsp" class="navbar-item"> <img src="img/logo.png"
-				width="50">
+				width="30">
 			</a>
 			<%
 				if (((Usuario) session.getAttribute("user")).getTipo() == 3) {

@@ -5,8 +5,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Login - ManzERP</title>
-<link rel="icon" href="img/favicon.png">
+<title>Login - Ronaldo Chamados</title>
+<link rel="icon" href="img/RonaldoChamados.png">
 <link rel="stylesheet" type="text/css" href="css/bulma.min.css">
 </head>
 <body>

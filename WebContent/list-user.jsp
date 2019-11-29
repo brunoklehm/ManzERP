@@ -13,8 +13,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Listar usuários - ManzERP</title>
-<link rel="icon" href="img/favicon.png">
+<title>Listar usuários - Ronaldo Chamados</title>
+<link rel="icon" href="img/RonaldoChamados.png">
 <link rel="stylesheet" type="text/css" href="css/bulma.min.css">
 </head>
 <body>
@@ -44,7 +44,7 @@
 		aria-label="dropdown navigation">
 	<div class="navbar-start">
 		<a href="index.jsp" class="navbar-item"> <img src="img/logo.png"
-			width="50">
+			width="30">
 		</a>
 		<%
 			if (user != null) {
@@ -94,16 +94,26 @@
 			<h1 class="title">Usuários</h1>
 			</section>
 		</center>
+		<br> <input id="inputCall" type="text" onkeyup="functionSearch()"
+			placeholder="Pesquisar por Nome" class="input is-rounded"
+			style="max-width: 200px;"> <br>
 		<br>
 		<table
-			class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+			class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
+			id="tableCalls">
 			<thead>
 				<tr>
 					<th>ID</th>
 					<th>Nome</th>
 					<th>CPF</th>
 					<th>Login</th>
+					<%
+						if (((Usuario) session.getAttribute("user")).getTipo() == 3) {
+					%>
 					<th>Senha</th>
+					<%
+						}
+					%>
 					<th>Tipo</th>
 					<th>Status</th>
 					<%
@@ -131,7 +141,13 @@
 					<td><%=us.getNome()%></td>
 					<td><%=us.getCpf()%></td>
 					<td><%=us.getLogin()%></td>
+					<%
+						if (((Usuario) session.getAttribute("user")).getTipo() == 3) {
+					%>
 					<td><%=us.getSenha()%></td>
+					<%
+						}
+					%>
 					<td>
 						<%
 							if (us.getTipo() == 1) {
@@ -197,5 +213,29 @@
 	<%
 		}
 	%>
+	<script>
+		function functionSearch() {
+			// Declare variables
+			var input, filter, table, tr, td, i, txtValue;
+			input = document.getElementById("inputCall");
+			filter = input.value.toUpperCase();
+			table = document.getElementById("tableCalls");
+			tr = table.getElementsByTagName("tr");
+
+			// Loop through all table rows, and hide those who don't match the search query
+			for (i = 0; i < tr.length; i++) {
+				td = tr[i].getElementsByTagName("td")[1];
+				if (td) {
+					txtValue = td.textContent || td.innerText;
+					if (txtValue.toUpperCase().includes(filter)) {
+						tr[i].style.display = "";
+					} else {
+						tr[i].style.display = "none";
+					}
+				}
+
+			}
+		}
+	</script>
 </body>
 </html>
